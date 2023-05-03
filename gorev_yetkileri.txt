@@ -1,0 +1,23 @@
+
+mytasks projesinin api tarafında kodlar hazırlandı task, team, custom_user modelleri, viewleri,
+serializer kodları ve url yapısı hazırlandı 
+frontend tarafında dosya path yapı ile verdiğim tüm dosyaların kodları hazır 
+aşağıda ki taleper frontend tarafında yapılacak geliştirmeleri içeriyor
+mytasks projesinde görev ve takım görme ve oluşturma yetkileri
+
+1- sisteme login olan tüm kullanıcılar görev oluşturbilir
+2- sisteme login olan gütm kullanıcılar takım oluşturbilir
+3- kullanıcılar kendilerine ait ve üye ve/veya yönettikleri takımların tüm görevlerini
+görebilirler ancak kendi oluşturdukları görevleri silebilir ve/veya edit edebilirler
+
+maytasks projesinde görev kartı üzerinde takım renk ve sembolünün görünmesi
+
+1- bir takım ile ilişkili görev oluşturulduğunda görev kartınından sağ alt tarafında
+o takıma ait sembol ve renk bilgisi bir icon olarak görülmeli böylce kullanıcı görevlerini
+hangi takımla ilişkili olduğunu anlayabililmeli
+
+mystask projesinde görev kartlarının etkilşimli arayüz tasarımı
+
+1- görev listesinde ki görev kartlarının kullanıcılar tarafından mouse sol click ile seçilerek
+statuler arasında sürekle bırak şeklide aktif taşımaya ve taşıma sonrası görevin statusunu
+taşınan aşamaya uygun olarak güncellemesi gerekiyor

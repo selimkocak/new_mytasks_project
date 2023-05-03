@@ -1,0 +1,15 @@
+.login-form {
+    width: 100%;
+    max-width: 320px;
+    padding: 15px;
+    margin: auto;
+  }
+  
+  .login-form h2 {
+    margin-bottom: 30px;
+  }
+  
+  .login-form input {
+    margin-bottom: 20px;
+  }
+  

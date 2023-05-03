@@ -1,0 +1,15 @@
+.register-form {
+    width: 100%;
+    max-width: 320px;
+    padding: 15px;
+    margin: auto;
+  }
+  
+  .register-form h2 {
+    margin-bottom: 30px;
+  }
+  
+  .register-form input {
+    margin-bottom: 20px;
+  }
+  

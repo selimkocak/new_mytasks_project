@@ -1,0 +1,6 @@
+{
+    "gitHistory.alwaysPromptRepositoryPicker": true,
+    "gitHistory.editorTitleButtonOpenRepo": true,
+    "gitHistory.hideCommitViewExplorer": true,
+    "gitHistory.includeRemoteBranches": true
+}

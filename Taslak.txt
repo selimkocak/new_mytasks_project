@@ -1,0 +1,289 @@
+Aşağıda ki mytasks proje taslağı için detaylı bir iş planı hazır madde madde ilerle önce gelişmiş bir iş süreci çıkar kusursuz basit bir görev yönetimi programı oluşturmak istiyorum
+django rest framework ile basit bir mytasks projesi yapmak istiyorum. proje içeriği ve amacı şöyle olacak lütfen not;
+1- backend tarafında api  ve custom_user adında 2 uygulama oluşturmak istiyorum
+2- api model yapısı;
+from custom_user.models import AppUser
+from django.db import models
+
+User = AppUser
+
+class Task(models.Model):
+    title = models.CharField(max_length=100)
+    description = models.TextField(blank=True, null=True)
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='owned_tasks')
+    assigned_to = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='tasks_assigned')
+    is_completed = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.title
+3- custom_user model yapısı;
+from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
+from django.db import models
+from django.utils import timezone
+
+class AppUserManager(BaseUserManager):
+    def create_user(self, email, password=None, **extra_fields):
+        """
+        Creates and saves a new user
+        """
+        if not email:
+            raise ValueError('Users must have an email address')
+        user = self.model(email=self.normalize_email(email), **extra_fields)
+        user.set_password(password)
+        user.save(using=self._db)
+        return user
+
+    def create_superuser(self, email, password):
+        """
+        Creates and saves a new superuser
+        """
+        user = self.create_user(email, password)
+        user.is_staff = True
+        user.is_superuser = True
+        user.save(using=self._db)
+        return user
+
+class AppUser(AbstractBaseUser, PermissionsMixin):
+    """
+    Custom user model that supports using email instead of username
+    """
+    email = models.EmailField(max_length=255, unique=True)
+    first_name = models.CharField(max_length=255, blank=True)
+    last_name = models.CharField(max_length=255, blank=True)
+    is_active = models.BooleanField(default=True)
+    is_staff = models.BooleanField(default=False)
+    created_at = models.DateTimeField(default=timezone.now)
+
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = []
+
+    objects = AppUserManager()
+
+    def __str__(self):
+        return self.email
+4- kullanıcı kimlik doğrulaması yapılmasını istiyorum
+5- django rest framework ile mytasks için crud yapabilir olmak istiyorum
+6- frontend kısmını react 18.2.0 ile inşaa etmek istiyorum
+7- frontend\package.json kodlarım;
+{
+  "name": "frontend",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@testing-library/jest-dom": "^5.16.5",
+    "@testing-library/react": "^13.4.0",
+    "@testing-library/user-event": "^13.5.0",
+    "axios": "^1.2.3",
+    "bootstrap": "^5.2.3",
+    "http-server": "^14.1.1",
+    "js-cookie": "^3.0.1",
+    "react": "^18.2.0",
+    "react-bootstrap": "^2.7.0",
+    "react-dom": "^18.2.0",
+    "react-scripts": "5.0.1",
+    "web-vitals": "^2.1.4"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}
+8-  frontend\src\App.js kodlarım;
+import './App.css';
+import React from 'react';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
+import Container from 'react-bootstrap/Container';
+import Navbar from 'react-bootstrap/Navbar';
+import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
+
+
+axios.defaults.xsrfCookieName = 'csrftoken';
+axios.defaults.xsrfHeaderName = 'X-CSRFToken';
+axios.defaults.withCredentials = true;
+
+const client = axios.create({
+  baseURL: "http://127.0.0.1:8000"
+});
+
+function App() {
+
+  const [currentUser, setCurrentUser] = useState();
+  const [registrationToggle, setRegistrationToggle] = useState(false);
+  const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+
+  useEffect(() => {
+    client.get("/api/user")
+    .then(function(res) {
+      setCurrentUser(true);
+    })
+    .catch(function(error) {
+      setCurrentUser(false);
+    });
+  }, []);
+
+  function update_form_btn() {
+    if (registrationToggle) {
+      document.getElementById("form_btn").innerHTML = "Register";
+      setRegistrationToggle(false);
+    } else {
+      document.getElementById("form_btn").innerHTML = "Log in";
+      setRegistrationToggle(true);
+    }
+  }
+
+  function submitRegistration(e) {
+    e.preventDefault();
+    client.post(
+      "/api/register",
+      {
+        email: email,
+        username: username,
+        password: password
+      }
+    ).then(function(res) {
+      client.post(
+        "/api/login",
+        {
+          email: email,
+          password: password
+        }
+      ).then(function(res) {
+        setCurrentUser(true);
+      });
+    });
+  }
+
+  function submitLogin(e) {
+    e.preventDefault();
+    client.post(
+      "/api/login",
+      {
+        email: email,
+        password: password
+      }
+    ).then(function(res) {
+      setCurrentUser(true);
+    });
+  }
+
+  function submitLogout(e) {
+    e.preventDefault();
+    client.post(
+      "/api/logout",
+      {withCredentials: true}
+    ).then(function(res) {
+      setCurrentUser(false);
+    });
+  }
+
+  if (currentUser) {
+    return (
+      <div>
+        <Navbar bg="dark" variant="dark">
+          <Container>
+            <Navbar.Brand>Authentication App</Navbar.Brand>
+            <Navbar.Toggle />
+            <Navbar.Collapse className="justify-content-end">
+              <Navbar.Text>
+                <form onSubmit={e => submitLogout(e)}>
+                  <Button type="submit" variant="light">Log out</Button>
+                </form>
+              </Navbar.Text>
+            </Navbar.Collapse>
+          </Container>
+        </Navbar>
+          <div className="center">
+            <h2>You're logged in!</h2>
+          </div>
+        </div>
+    );
+  }
+  return (
+    <div>
+    <Navbar bg="dark" variant="dark">
+      <Container>
+        <Navbar.Brand>Authentication App</Navbar.Brand>
+        <Navbar.Toggle />
+        <Navbar.Collapse className="justify-content-end">
+          <Navbar.Text>
+            <Button id="form_btn" onClick={update_form_btn} variant="light">Register</Button>
+          </Navbar.Text>
+        </Navbar.Collapse>
+      </Container>
+    </Navbar>
+    {
+      registrationToggle ? (
+        <div className="center">
+          <Form onSubmit={e => submitRegistration(e)}>
+            <Form.Group className="mb-3" controlId="formBasicEmail">
+              <Form.Label>Email address</Form.Label>
+              <Form.Control type="email" placeholder="Enter email" value={email} onChange={e => setEmail(e.target.value)} />
+              <Form.Text className="text-muted">
+                We'll never share your email with anyone else.
+              </Form.Text>
+            </Form.Group>
+            <Form.Group className="mb-3" controlId="formBasicUsername">
+              <Form.Label>Username</Form.Label>
+              <Form.Control type="text" placeholder="Enter username" value={username} onChange={e => setUsername(e.target.value)} />
+            </Form.Group>
+            <Form.Group className="mb-3" controlId="formBasicPassword">
+              <Form.Label>Password</Form.Label>
+              <Form.Control type="password" placeholder="Password" value={password} onChange={e => setPassword(e.target.value)} />
+            </Form.Group>
+            <Button variant="primary" type="submit">
+              Submit
+            </Button>
+          </Form>
+        </div>        
+      ) : (
+        <div className="center">
+          <Form onSubmit={e => submitLogin(e)}>
+            <Form.Group className="mb-3" controlId="formBasicEmail">
+              <Form.Label>Email address</Form.Label>
+              <Form.Control type="email" placeholder="Enter email" value={email} onChange={e => setEmail(e.target.value)} />
+              <Form.Text className="text-muted">
+                We'll never share your email with anyone else.
+              </Form.Text>
+            </Form.Group>
+            <Form.Group className="mb-3" controlId="formBasicPassword">
+              <Form.Label>Password</Form.Label>
+              <Form.Control type="password" placeholder="Password" value={password} onChange={e => setPassword(e.target.value)} />
+            </Form.Group>
+            <Button variant="primary" type="submit">
+              Submit
+            </Button>
+          </Form>
+        </div>
+      )
+    }
+    </div>
+  );
+}
+
+export default App;
+

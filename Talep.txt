@@ -1,0 +1,194 @@
+kullanıcı ile etkileşimi başarılı bir örnek uygulma olan mynotes uygulamasının frontend kodlarını sana vereceğim lütfen kodları incele ve bu kodların yapısal benzetim ile mytasks frontend tarafında kullan
+import React, { useState, useEffect } from 'react'
+import { ReactComponent as ArrowLeft } from '../assets/arrow-left.svg'
+import { Link } from 'react-router-dom'
+
+const NotePage = ({ match, history }) => {
+
+    let noteId = match.params.id
+    let [note, setNote] = useState(null)
+
+    useEffect(() => {
+        getNote()
+    }, [noteId])
+
+
+    let getNote = async () => {
+        if (noteId === 'new') return
+
+        let response = await fetch(`/api/notes/${noteId}/`)
+        let data = await response.json()
+        setNote(data)
+    }
+
+    let createNote = async () => {
+        fetch(`/api/notes/`, {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(note)
+        })
+    }
+
+
+    let updateNote = async () => {
+        fetch(`/api/notes/${noteId}/`, {
+            method: "PUT",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(note)
+        })
+    }
+
+
+    let deleteNote = async () => {
+        fetch(`/api/notes/${noteId}/`, {
+            method: 'DELETE',
+            'headers': {
+                'Content-Type': 'application/json'
+            }
+        })
+        history.push('/')
+    }
+
+    let handleSubmit = () => {
+        console.log('NOTE:', note)
+        if (noteId !== 'new' && note.body == '') {
+            deleteNote()
+        } else if (noteId !== 'new') {
+            updateNote()
+        } else if (noteId === 'new' && note.body !== null) {
+            createNote()
+        }
+        history.push('/')
+    }
+
+    let handleChange = (value) => {
+        setNote(note => ({ ...note, 'body': value }))
+        console.log('Handle Change:', note)
+    }
+
+    return (
+        <div className="note" >
+            <div className="note-header">
+                <h3>
+                    <ArrowLeft onClick={handleSubmit} />
+                </h3>
+                {noteId !== 'new' ? (
+                    <button onClick={deleteNote}>Delete</button>
+                ) : (
+                    <button onClick={handleSubmit}>Done</button>
+                )}
+
+            </div>
+            <textarea onChange={(e) => { handleChange(e.target.value) }} value={note?.body}></textarea>
+        </div>
+    )
+}
+export default NotePage
+import React, { useState, useEffect } from 'react'
+import ListItem from '../components/ListItem'
+import AddButton from '../components/AddButton'
+
+
+const NotesListPage = () => {
+
+    let [notes, setNotes] = useState([])
+
+    useEffect(() => {
+        getNotes()
+    }, [])
+
+
+    let getNotes = async () => {
+
+        let response = await fetch('/api/notes/')
+        let data = await response.json()
+        setNotes(data)
+    }
+
+    return (
+        <div className="notes">
+            <div className="notes-header">
+                <h2 className="notes-title">&#9782; Notes</h2>
+                <p className="notes-count">{notes.length}</p>
+            </div>
+
+            <div className="notes-list">
+                {notes.map((note, index) => (
+                    <ListItem key={index} note={note} />
+                ))}
+            </div>
+            <AddButton />
+        </div>
+    )
+}
+export default NotesListPage
+import React from 'react'
+
+const Header = () => {
+
+    return (
+        <div className="app-header">
+            <h1>Note List</h1>
+        </div>
+    )
+}
+export default Header
+import React from 'react'
+import { Link } from 'react-router-dom'
+
+let getTime = (note) => {
+    return new Date(note.updated).toLocaleDateString()
+}
+
+let getTitle = (note) => {
+
+    let title = note.body.split('\n')[0]
+    if (title.length > 45) {
+        return title.slice(0, 45)
+    }
+    return title
+}
+
+
+let getContent = (note) => {
+    let title = getTitle(note)
+    let content = note.body.replaceAll('\n', ' ')
+    content = content.replaceAll(title, '')
+
+    if (content.length > 45) {
+        return content.slice(0, 45) + '...'
+    } else {
+        return content
+    }
+}
+
+
+const ListItem = ({ note }) => {
+    return (
+        <Link to={`/note/${note.id}`}>
+            <div className="notes-list-item" >
+                <h3>{getTitle(note)}</h3>
+                <p><span>{getTime(note)}</span>{getContent(note)}</p>
+            </div>
+
+        </Link>
+    )
+}
+export default ListItem
+import React from 'react'
+import { Link } from 'react-router-dom'
+import { ReactComponent as AddIcon } from '../assets/add.svg'
+
+
+const AddButton = () => {
+    return (
+        <Link to="/note/new" className="floating-button">
+            <AddIcon />
+        </Link>
+    )
+
+export default AddButton

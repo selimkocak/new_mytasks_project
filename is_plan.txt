@@ -1,0 +1,285 @@
+Proje taslağınızı inceledim ve aşağıdaki gibi detaylı bir iş planı hazırladım:
+1.	Proje ortamının hazırlanması:
+	Python ve Django sürümlerinin kontrol edilmesi.
+	Sanal ortamın kurulması ve gerekli paketlerin yüklenmesi (Django, Django Rest Framework, React, Bootstrap vb.)
+2.	Django projesi ve uygulamalarının oluşturulması:
+	Django projesi oluşturulacak (ör. django-admin startproject mytasks).
+	İki Django uygulaması oluşturulacak: api ve custom_user.
+3.	custom_user uygulaması için model ve yöneticilerin oluşturulması:
+	AppUserManager ve AppUser sınıfları oluşturulacak.
+	Veritabanı için migrasyon dosyalarının oluşturulması ve uygulanması.
+4.	api uygulaması için model ve serializerlar oluşturulması:
+	Task modeli oluşturulacak.
+	Task modeli için serializer sınıfının oluşturulması (ör. TaskSerializer).
+5.	Django Rest Framework ile API View'lerinin oluşturulması:
+	Task listeleme, oluşturma, güncelleme ve silme işlemleri için view'ler oluşturulacak.
+	Kullanıcı kayıt, oturum açma ve oturum kapatma işlemleri için view'ler oluşturulacak.
+6.	URL yapılandırması ve yönlendirmelerin ayarlanması:
+	Django ve Django Rest Framework için URL yapılandırmalarının yapılması.
+	View'lerin ve işlemlerin URL'lerle eşleştirilmesi.
+7.	React frontend uygulamasının oluşturulması:
+	React ve gerekli bağımlılıkların kurulması (axios, bootstrap vb.).
+	React uygulaması içinde ana bileşenlerin (App.js) ve yardımcı bileşenlerin oluşturulması.
+	Axios kullanarak API ile iletişim sağlanması ve CRUD işlemlerinin gerçekleştirilmesi.
+8.	Kullanıcı kimlik doğrulaması ve yetkilendirmenin sağlanması:
+	API tarafında token veya oturum tabanlı kimlik doğrulama sistemi kullanılması.
+	Frontend tarafında kimlik bilgilerinin saklanması ve API isteklerinde kullanılması.
+	Kullanıcıya göre veri görüntüleme ve erişim izinlerinin yönetilmesi.
+9.	Projenin test edilmesi ve hataların giderilmesi:
+	Kullanıcı işlemleri ve Task CRUD işlemlerinin test edilmesi.
+	Hataların ve eksikliklerin belirlenmesi ve düzeltilmesi.
+10.	Projenin tamamlanması ve yayına alınması:
+	Projenin son hali kontrol edilip, düzgün çalıştığından em
+
+MyTasks projesinin frontend tarafındaki klasör ve dosya yapısı için notlar:
+
+```
+frontend
+├── node_modules
+├── public
+│   ├── favicon.ico
+│   ├── index.html
+│   ├── logo192.png
+│   ├── logo512.png
+│   ├── manifest.json
+│   └── robots.txt
+├── src
+│   ├── components
+│   │   ├── Auth
+│   │   │   ├── LoginForm.js
+│   │   │   ├── Logout.js
+│   │   │   └── RegisterForm.js
+│   │   ├── Tasks
+│   │   │   ├── TaskCreate.js
+│   │   │   ├── TaskDelete.js
+│   │   │   ├── TaskEdit.js
+│   │   │   ├── TaskItem.js
+│   │   │   └── TaskList.js
+│   │   └── Navbar.js
+│   ├── services
+│   │   └── api.js
+│   ├── utils
+│   │   ├── auth.js
+│   │   └── protectedRoute.js
+│   ├── App.css
+│   ├── App.js
+│   ├── index.css
+│   ├── index.js
+│   └── reportWebVitals.js
+├── .gitignore
+├── package-lock.json
+├── package.json
+└── README.md
+```
+
+Frontend inşa etmek için 20 maddelik bir iş planı:
+
+1. Node.js ve npm (Node Package Manager) kurulumu.
+2. React uygulaması oluşturma (`create-react-app` kullanarak).
+3. Gerekli paketlerin kurulumu (axios, react-router-dom, bootstrap vb.).
+4. Ana bileşenlerin (App.js) ve yardımcı bileşenlerin oluşturulması.
+5. `Navbar` bileşeninin oluşturulması ve stil uygulanması.
+6. Kullanıcı kayıt, giriş ve çıkış işlemleri için `Auth` bileşenlerinin oluşturulması.
+7. `LoginForm` ve `RegisterForm` bileşenlerinin stil uygulanması.
+8. `Tasks` bileşenlerinin oluşturulması (TaskCreate, TaskDelete, TaskEdit, TaskItem, TaskList).
+9. Görev bileşenlerine stil uygulanması.
+10. Axios ile API isteklerini yönetmek için `api.js` dosyasının oluşturulması ve API ile iletişim sağlanması.
+11. Kullanıcı kimlik doğrulama işlemleri için `auth.js` dosyasının oluşturulması.
+12. Korunan rotalar için `protectedRoute.js` dosyasının oluşturulması.
+13. React Router kullanarak sayfalar arası geçiş sağlanması.
+14. API tarafında kimlik doğrulama ve yetkilendirme işlemlerinin gerçekleştirilmesi.
+15. Kullanıcıların yalnızca yetkili oldukları işlemlere erişimini sağlamak için izinlerin yönetilmesi.
+16. Hata ve mesaj bileşenlerinin oluşturulması ve hataların kullanıcıya bildirilmesi.
+17. Uygulamanın genel görünümünü iyileştirmek için Bootstrap ve CSS uygulanması.
+18. Uygulamanın responsif tasarımının sağlanması ve mobil uyumlu hale getirilmesi.
+19. Uygulamanın performansını ve kullanılabilirliğini test etmek için tarayıcı testleri ve entegrasyon testleri gerçekleştirilmesi.
+20. Yapılan işlemleri düzenli olarak kaynak kodu kontrol sistemi (örneğin, git) ile sürüm kontrolü altına alınması ve projeyi canlı ortama taşımak için uygun dağıtım yöntemlerinin belirlenmesi (örneğin, Vercel, Netlify vb.).
+
+Bu iş planı, MyTasks projesinin frontend tarafını inşa etmek için önemli adımları içermektedir. Bu adımlarla projeyi başarıyla tamamlamak için öncelik sırasına göre ilerleyebilirsiniz.
+
+
+İş parçalarını 20 adımda düzenleyeceğiz ve dosya boyutlarını 50 satıra kadar sınırlandıracağız. İşte süreç:
+
+1. frontend\src\components\Tasks altındaki bütün bileşenleri tek bir sayfada birleştireceğiz.
+2. TaskCreate, TaskEdit ve TaskDelete işlevlerini tek bir bileşene entegre edeceğiz.
+3. Yeni bileşenin adını TaskManager olarak değiştireceğiz.
+4. TaskManager bileşenini oluşturacak ve kapsayacak şekilde TaskList bileşenini güncelleyeceğiz.
+5. TaskManager bileşeninde görev ekleme, düzenleme ve silme işlevlerini yönetmek için yerel durum yönetimini kullanacağız.
+6. Etkileşimli bir kullanıcı deneyimi sağlamak için TaskManager içinde Modal bileşenleri kullanacağız.
+7. TaskManager bileşenindeki form kontrolleri için özel React hook'ları kullanacağız.
+8. TaskManager bileşenindeki form kontrolleri için doğrulama ekleme.
+9. TaskManager bileşeninde işlemler için API çağrıları yapma.
+10. TaskManager bileşeninde işlem sonuçlarına göre kullanıcı geri bildirimi sağlama.
+11. frontend\src\components\Tasks altındaki dosya yapılarını optimize etme.
+12. Kod tekrarını önlemek için TaskManager bileşeninde kodu parçalara ayırma.
+13. TaskManager bileşenindeki kodu 50 satıra kadar sınırlandırma.
+14. Gereksiz bileşenleri ve stil dosyalarını temizleme.
+15. TaskManager bileşeninde React'in sanal DOM özelliklerini en iyi şekilde kullanma.
+16. TaskManager bileşeninde performansı optimize etme.
+17. frontend\src\components\Tasks altındaki dosyaları test etme.
+18. TaskManager bileşeninin yanı sıra diğer bileşenlerin testlerini güncelleme.
+19. Uygulamanın genel kullanılabilirliğini ve erişilebilirliğini değerlendirme.
+20. Son olarak, yapılan değişiklikleri ve iyileştirmeleri uygulamada test etme ve doğrulama.
+
+Bu süreçle birlikte, kullanıcıların tek bir sayfada görev ekleme, düzenleme ve silme işlemlerini gerçekleştirebildiği ve daha iyi bir kullanıcı deneyimi sağlayan bir yapıya sahip olacaksınız.
+
+
+mytasks projesinin frontend tarafında yeniden yapılandırmak için 20 maddelik iş planı gereği aşağıda ki işlemleri açıkla ve kodları oluştur lütfen;
+
+
+Projenizin kullanıcı deneyimini artırmak ve daha modern ve kullanıcı dostu bir arayüz inşa etmek için aşağıdaki stratejiyi öneriyorum:
+
+1. React uygulamanızı daha hızlı ve optimize hale getirmek için kod bölümlemesi (code splitting) uygulayın.
+2. Sayfa geçişlerinde daha hızlı bir deneyim sunmak için React Router kullanın.
+3. Görevlerin süreçlerini daha etkili bir şekilde takip etmek için görsel bir bileşen ekleyin (ör. ilerleme çubuğu, yüzdelik tamamlanma).
+4. Görevler arasında arama ve sıralama özellikleri ekleyin.
+5. Görevlere yorumlar ve dosya ekleme gibi özellikler ekleyerek işbirliğini kolaylaştırın.
+6. Görevleri zaman çizelgesinde göstererek, kullanıcıların zamanla ilerlemelerini daha kolay takip etmelerini sağlayın.
+7. Kullanıcıların projeler ve takımlar arasında görevlerini düzenlemelerine ve paylaşmalarına olanak tanıyan yetenekler ekleyin.
+8. Kullanıcıların görevlerini özelleştirebilmesi için etiket ve renk seçenekleri ekleyin.
+9. Görevlerin zamanında tamamlanıp tamamlanmadığını gösteren otomatik bildirimler ekleyin.
+10. Kullanıcı deneyimini daha da geliştirmek için UI/UX tasarımını modernize edin (ör. animasyonlar, geçişler, vb.).
+
+Bu stratejiyi uygulamak, proje yönetimi uygulamanızın kullanıcı deneyimini önemli ölçüde artıracak ve kullanıcı dostu bir arayüz sağlayacaktır. İhtiyaçlarınıza göre bu maddeleri uyarlayarak ve ek özellikler ekleyerek projenizi daha da geliştirebilirsiniz.
+
+
+
+
+
+
+Mynotes uygulamasının fonksiyonelliğini MyTasks uygulamasına entegre etmek için, öncelikle MyTasks uygulamasında yeni bileşenler oluşturarak başlayacağım. Yeni bileşenler, Mynotes uygulamasındaki bileşenlerle benzer özellikler taşıyacak ve MyTasks'in mevcut dosya yapısına mümkün olduğunca az müdahalede bulunacak.
+
+MyTasks uygulamasında şu adımları izleyin:
+
+1. Öncelikle, "frontend\src\components\Tasks" klasöründe, "TaskNotePage.js" ve "TaskNotesListPage.js" adında iki yeni bileşen oluşturun.
+2. MyTasks uygulamasının "frontend\src\assets" klasörüne, Mynotes uygulamasındaki "arrow-left.svg" ve "add.svg" dosyalarını kopyalayın.
+3. Mynotes uygulamasındaki NotePage bileşeninin kodunu TaskNotePage.js dosyasına yapıştırın. Ardından şu değişiklikleri yapın:
+   - Tüm "note" ifadelerini "task" ile değiştirin.
+   - API istekleri yaparken, URL'leri MyTasks uygulamasındaki API URL'lerine göre güncelleyin.
+4. Mynotes uygulamasındaki NotesListPage bileşeninin kodunu TaskNotesListPage.js dosyasına yapıştırın. Ardından şu değişiklikleri yapın:
+   - Tüm "note" ifadelerini "task" ile değiştirin.
+   - API istekleri yaparken, URL'leri MyTasks uygulamasındaki API URL'lerine göre güncelleyin.
+5. Mynotes uygulamasındaki ListItem bileşeninin kodunu frontend\src\components\Tasks\Item\TaskItem.js dosyasına yapıştırın ve şu değişiklikleri yapın:
+   - Tüm "note" ifadelerini "task" ile değiştirin.
+   - API istekleri yaparken, URL'leri MyTasks uygulamasındaki API URL'lerine göre güncelleyin.
+6. Mynotes uygulamasındaki AddButton bileşeninin kodunu frontend\src\components\Tasks\AddTaskButton.js adında yeni bir dosyaya yapıştırın ve şu değişiklikleri yapın:
+   - Tüm "note" ifadelerini "task" ile değiştirin.
+   - API istekleri yaparken, URL'leri MyTasks uygulamasındaki API URL'lerine göre güncelleyin.
+7. Son olarak, App.js dosyasında yeni oluşturulan TaskNotePage ve TaskNotesListPage bileşenlerini kullanarak uygun yönlendirmeleri (React Router) ekleyin.
+
+Bu adımları izleyerek, MyTasks uygulamasında Mynotes uygulamasının yapısal benzetimini sağlamış olacaksınız. Yeni bileşenler, MyTasks'in mevcut dosya yapısına entegre edilerek, her iki uygulamanın
+
+
+
+
+
+
+
+
+
+MyTasks projesine takım özelliği eklemek için öncelikle backend ve frontend tarafında yapılması gereken adımları belirleyelim.
+
+Backend Adımları:
+1. Takım modeli oluşturma: `backend\api\models.py` dosyasına `Team` adında yeni bir model ekleyin.
+2. Takım modeli için serializer: `backend\api\serializers.py` dosyasına `TeamSerializer` adında yeni bir serializer ekleyin.
+3. Takım modeli için viewset: `backend\api\views.py` dosyasına `TeamViewSet` adında yeni bir viewset ekleyin.
+4. Takım modeli için URL: `backend\api\urls.py` dosyasına takım modeli için URL'leri tanımlayın.
+5. Takım modeli için izinler: `backend\api\permissions.py` dosyasında takım modeli için gerekli izinleri ekleyin.
+
+Frontend Adımları:
+1. Takım modeli için component: `frontend\src\components\Teams` klasörü oluşturun ve içerisine takım işlemlerini gerçekleştirecek componentleri ekleyin (örn: Create, List, Edit, Delete).
+2. Takım modeli için stil dosyaları: Her component için uygun stil dosyalarını `frontend\src\components\Views\Teams` klasörüne ekleyin.
+3. Takım modeli için servisler: `frontend\src\services\api.js` dosyasına takım modeli için API isteklerini gerçekleştirecek fonksiyonları ekleyin.
+4. Takım modeli için sayfalar: `frontend\src\App.js` dosyasına takım modeli için sayfaları ekleyin ve uygun URL'lerle eşleştirin.
+5. Takım modeli için durum yönetimi: Uygulamanın durum yönetimine takım modeli için gerekli durumları ekleyin.
+
+Bu adımların detaylarını projenizde uygularken, genel iş parçacığı sayısını ve kod satırı sınırlarını göz önünde bulundurarak ölçeklendirebilirsiniz. Uzun kodları anlamakta zorluk çekiyorsanız, kodu daha küçük ve yönetilebilir parçalara bölebilir ve daha fazla yorum satırı ekleyerek okunabilirliği artırabilirsiniz.
+
+
+
+İş planı aşağıdaki gibi olabilir:
+
+1. Giriş ve takım yetkilerini belirleyin:
+   - `frontend\src\utils\auth.js` dosyasına gerekli yetki kontrol fonksiyonlarını ekleyin.
+2. Kullanıcı yetkilerine göre görev ve takım oluşturma özelliğini sağlayın:
+   - `frontend\src\components\Tasks\Create\TaskCreate.js` ve `frontend\src\components\Teams\Create\TeamCreate.js` 
+   dosyalarında giriş yapan kullanıcıların yetkilerini kontrol ederek görev ve takım oluşturma özelliğini etkinleştirin veya devre dışı bırakın.
+3. Kullanıcının görme ve düzenleme yetkilerini sağlayın:
+   - `frontend\src\components\Tasks\TaskItem.js` ve `frontend\src\components\Teams\TeamItem.js` dosyalarında kullanıcının yetkilerine göre düzenleme ve silme işlemlerini etkinleştirin veya devre dışı bırakın.
+4. Görev kartlarında takım renk ve sembolünü gösterin:
+   - `frontend\src\components\Tasks\TaskItem.js` dosyasında takım bilgilerini görev kartında göstermek için gerekli değişiklikleri yapın.
+5. Görev kartlarının etkileşimli arayüz tasarımını sağlayın:
+   - `frontend\src\components\Tasks\TaskItem.js` dosyasında kullanıcılar tarafından sol tıkla seçilerek sürükleyip bırakma işlemi için gerekli değişiklikleri yapın.
+6. Tüm görevlerin durumunu güncelleyin:
+   - `frontend\src\components\Tasks\TaskItem.js` dosyasında görevin durumunu güncellemek için API çağrısını yapın.
+7. Görev filtreleme özelliğini sağlayın:
+   - `frontend\src\components\Tasks\Filter\TaskFilter.js` dosyasında görevleri süzme özelliğini etkinleştirin.
+8. Görev listesi sayfasında görevleri durumlarına göre gruplayın:
+   - `frontend\src\components\Tasks\List\TaskList.js` dosyasında görevleri durumlarına göre gruplamayı sağlayacak değişiklikleri yapın.
+9. Görev listesi sayfasında tüm görevleri filtreleyin:
+   - `frontend\src\components\Tasks\List\TaskList.js` dosyasında filtreleme özelliğini kullanarak görevleri süzün.
+10. Görev listesi sayfasında, görev kartları üzerinde etkileşimli özellikleri sağlayın:
+    - `frontend\src\components\Tasks\List\TaskList.js` dosyasında görev kartları üzerinde etkileşimli özelliklerin çalışmasını sağlayın.
+
+11. Kodu test edin ve hataları düzeltin.
+12. Değişiklikleri kaydedin ve git deposuna ekleyin.
+13. Tüm işlevselliği tarayıcıda test edin: Geliştirdiğiniz tüm özelliklerin doğru çalıştığından emin olmak için uygulamayı tarayıcıda test edin. Bu aşama hataları ve hatalı davranışları ortaya çıkaracaktır. Problemleri belirleyin ve düzeltin.
+
+14. Sorunları düzeltin ve optimizasyon yapın: Test sürecinde ortaya çıkan hataları ve performans sorunlarını düzeltin. Gerekli optimizasyonları uygulayarak uygulamanın verimli ve sorunsuz çalışmasını sağlayın.
+
+15. Kullanıcı yetkilendirme ve kimlik doğrulama işlemlerini güncelleyin: Görev ve takım yetkileriyle ilgili gereksinimleri karşılayacak şekilde kullanıcı yetkilendirme ve kimlik doğrulama işlemlerini güncelleyin.
+
+16. Görev kartı ve takım renk/semsbolünün görünmesini sağlayın: Görev kartı üzerinde, takımla ilişkili görev oluşturulduğunda, takıma ait sembol ve renk bilgisi bir simge olarak görüntülenmelidir. Bu özelliği implemente edin.
+
+17. Görev kartlarının etkileşimli arayüz tasarımını sağlayın: Görev listesindeki görev kartlarının kullanıcılar tarafından fare sol tıklama ile seçilerek, statüler arasında sürükleyip bırak şeklinde aktif taşınmasını ve taşıma sonrası görevin durumunun güncellenmesini sağlayın.
+
+18. Uygulama dökümantasyonu hazırlayın: Geliştirdiğiniz uygulamanın nasıl çalıştığına, kullanılan teknolojilere ve gerçekleştirilen işlemlere dair dökümantasyon oluşturun. Bu dökümantasyon, daha sonra geliştirme sürecine katılacak olan diğer geliştiricilere de yardımcı olacaktır.
+
+19. Uygulamanın son testini yapın: Tüm düzeltmeler ve optimizasyonlar tamamlandıktan sonra, uygulamanın son testini yaparak işlevlerin doğru bir şekilde çalıştığından emin olun.
+
+20. Uygulamayı yayına alın: Tüm geliştirme ve test süreçlerini tamamladıktan sonra uygulamayı canlı ortama taşıyarak kullanıcılara sunun.
+
+Bu 20 adımlık iş planı, mytasks projesindeki iş eylemlerine göre hazırlanmıştır. Her adımı dikkatlice uygulayarak, frontend tarafında geliştirme sürecini başarıyla tamamlayabilirsiniz.
+
+
+İş planı:
+
+1. Kullanıcıların görevleri ve takımları görme ve oluşturma yetkilerinin doğru çalıştığından emin olun.
+2. Görev kartlarında görevle ilişkili takımın sembol ve renk bilgisinin görünmesini sağlayın.
+3. Görev kartlarındaki etkileşimli arayüz tasarımını geliştirin, görevlerin durumlarının sürükle-bırak ile güncellenmesini sağlayın.
+4. Kodları, dosya yapıları ve bağımlılıkları düzgün bir şekilde organize edin.
+5. Sistemin performansını ve kullanılabilirliğini optimize edin.
+6. Tüm kullanıcıların kendilerine ait ve üye oldukları takımların tüm görevlerini görebilmelerini sağlayın.
+7. Kullanıcıların sadece kendi oluşturdukları görevleri silebilmelerini ve düzenleyebilmelerini sağlayın.
+8. Görevlerin tamamlanma durumunu doğru bir şekilde yansıtın.
+9. Görevlerin durumlarının güncellendiğinde veritabanında da güncellenmesini sağlayın.
+10. Görevlerin ve takımların oluşturulmasında ve düzenlenmesinde doğrulama uygulayın.
+11. Hataların ve uyarıların kullanıcılara doğru şekilde gösterilmesini sağlayın.
+12. Görevlerin ve takımların listelerinin filtrelenebilmesini sağlayın.
+13. Kullanıcıların görevlerini ve takımlarını arayabilmesini ve sıralayabilmesini sağlayın.
+14. Görevlerin ve takımların silinmesinde onay isteyen bir modal ekleyin.
+15. Kullanıcıların görevlerini ve takımlarını paylaşabilmesini ve işbirliği yapabilmesini sağlayın.
+16. Kullanıcıların kendi profillerini düzenleyebilmelerini ve şifrelerini güncelleyebilmelerini sağlayın.
+17. Kullanıcıların belirli bir süre içinde tamamlanması gereken görevleri görüntüleyebilmelerini sağlayın.
+18. Kullanıcıların takımlarını yönetebilmelerini ve üyeleri ekleyip çıkarabilmelerini sağlayın.
+19. Projenin testlerini yazın ve sürekli entegrasyon ve sürekli dağıtım (CI/CD) pipeline'ını kurun.
+20. Projenin belgelerini yazın ve güncel tutun.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

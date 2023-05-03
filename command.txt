@@ -1,0 +1,21 @@
+backend
+
+pip install djangorestframework-simplejwt
+
+
+
+frontend
+npx create-react-app my-app
+npx create-react-app frontend
+cd frontend
+
+npm install axios
+npm install react-router-dom
+npm install bootstrap react-bootstrap
+npm install styled-components
+
+
+npm install axios bootstrap react-bootstrap
+npm install axios 
+npm install bootstrap 
+npm install react-bootstrap

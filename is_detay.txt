@@ -1,0 +1,809 @@
+1. Proje ortamının hazırlanması:
+
+Python ve Django sürümlerinin kontrol edilmesi için, terminalde aşağıdaki komutları kullanabilirsiniz:
+
+```bash
+python --version
+django-admin --version
+```
+
+Sanal ortamın kurulması ve gerekli paketlerin yüklenmesi:
+
+1.1. Sanal ortamın oluşturulması:
+Terminalde projenizin bulunacağı klasöre gidin ve aşağıdaki komutları kullanarak sanal ortamı oluşturun:
+
+```bash
+python -m venv mytasks_env
+```
+
+1.2. Sanal ortamın etkinleştirilmesi:
+Sanal ortamı etkinleştirmek için, terminalde şu komutları kullanın:
+
+Windows:
+```bash
+mytasks_env\Scripts\activate
+```
+
+macOS/Linux:
+```bash
+source mytasks_env/bin/activate
+```
+
+1.3. Gerekli paketlerin yüklenmesi:
+Gerekli paketleri yüklemek için, terminalde aşağıdaki komutları kullanın:
+
+```bash
+pip install django djangorestframework
+```
+
+React ve diğer bağımlılıkları yüklemek için, öncelikle Node.js ve npm'in (Node.js ile birlikte gelir) sisteminizde kurulu olduğundan emin olun. Daha sonra, terminalde aşağıdaki komutları kullanarak React uygulamasını oluşturun ve gerekli paketleri yükleyin:
+
+```bash
+npx create-react-app frontend
+cd frontend
+npm install axios bootstrap@5.2.3 react-bootstrap@2.7.0
+```
+
+Bu adımların ardından, sanal ortamınızda Django ve Django Rest Framework kurulu olacak ve React uygulamanız gerekli bağımlılıklarla birlikte oluşturulacaktır.
+
+
+1. Proje ortamının hazırlanması:
+
+Python ve Django sürümlerinin kontrol edilmesi için, terminalde aşağıdaki komutları kullanabilirsiniz:
+
+```bash
+python --version
+django-admin --version
+```
+
+Sanal ortamın kurulması ve gerekli paketlerin yüklenmesi:
+
+1.1. Sanal ortamın oluşturulması:
+Terminalde projenizin bulunacağı klasöre gidin ve aşağıdaki komutları kullanarak sanal ortamı oluşturun:
+
+```bash
+python -m venv mytasks_env
+```
+
+1.2. Sanal ortamın etkinleştirilmesi:
+Sanal ortamı etkinleştirmek için, terminalde şu komutları kullanın:
+
+Windows:
+```bash
+mytasks_env\Scripts\activate
+```
+
+macOS/Linux:
+```bash
+source mytasks_env/bin/activate
+```
+
+1.3. Gerekli paketlerin yüklenmesi:
+Gerekli paketleri yüklemek için, terminalde aşağıdaki komutları kullanın:
+
+```bash
+pip install django djangorestframework
+```
+
+React ve diğer bağımlılıkları yüklemek için, öncelikle Node.js ve npm'in (Node.js ile birlikte gelir) sisteminizde kurulu olduğundan emin olun. Daha sonra, terminalde aşağıdaki komutları kullanarak React uygulamasını oluşturun ve gerekli paketleri yükleyin:
+
+```bash
+npx create-react-app frontend
+cd frontend
+npm install axios bootstrap@5.2.3 react-bootstrap@2.7.0
+```
+
+Bu adımların ardından, sanal ortamınızda Django ve Django Rest Framework kurulu olacak ve React uygulamanız gerekli bağımlılıklarla birlikte oluşturulacaktır.
+
+
+
+3. custom_user uygulaması için model ve yöneticilerin oluşturulması:
+
+3.1. AppUserManager ve AppUser sınıflarının oluşturulması:
+`custom_user/models.py` dosyasına aşağıdaki kodları ekleyin:
+
+```python
+from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
+from django.db import models
+from django.utils import timezone
+from django.utils.translation import gettext as _
+
+
+class AppUserManager(BaseUserManager):
+    def create_user(self, email, password=None, **extra_fields):
+        """
+        Creates and saves a new user
+        """
+        if not email:
+            raise ValueError('Users must have an email address')
+        user = self.model(email=self.normalize_email(email), **extra_fields)
+        user.set_password(password)
+        user.save(using=self._db)
+        return user
+
+    def create_superuser(self, email, password):
+        """
+        Creates and saves a new superuser
+        """
+        user = self.create_user(email, password)
+        user.is_staff = True
+        user.is_superuser = True
+        user.save(using=self._db)
+        return user
+
+class AppUser(AbstractBaseUser, PermissionsMixin):
+    """
+    Custom user model that supports using email instead of username
+    """
+    email = models.EmailField(max_length=255, unique=True)
+    first_name = models.CharField(max_length=255, blank=True)
+    last_name = models.CharField(max_length=255, blank=True)
+    is_active = models.BooleanField(default=True)
+    is_staff = models.BooleanField(default=False)
+    created_at = models.DateTimeField(default=timezone.now)
+
+    groups = models.ManyToManyField(
+        'auth.Group',
+        verbose_name=_('groups'),
+        blank=True,
+        related_query_name="app_user",
+        related_name="app_user_set",
+        help_text=_(
+            'The groups this user belongs to. A user will get all permissions '
+            'granted to each of their groups.'
+        ),
+    )
+
+    user_permissions = models.ManyToManyField(
+        'auth.Permission',
+        verbose_name=_('user permissions'),
+        blank=True,
+        related_query_name="app_user",
+        related_name="app_user_set",
+        help_text=_('Specific permissions for this user.'),
+    )
+
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = []
+
+    objects = AppUserManager()
+
+    def __str__(self):
+        return self.email
+
+
+```
+
+3.2. Veritabanı için migrasyon dosyalarının oluşturulması:
+Terminalde aşağıdaki komutları kullanarak migrasyon dosyalarını oluşturun:
+
+```bash
+python manage.py makemigrations custom_user
+```
+
+3.3. Migrasyonların uygulanması:
+Migrasyonları uygulamak için terminalde şu komutları kullanın:
+
+```bash
+python manage.py migrate
+```
+
+Bu adımların tamamlanmasıyla, `custom_user` uygulaması için model ve yöneticiler oluşturulmuş ve veritabanı için migrasyonlar uygulanmış olacaktır.
+
+4. maddede, api uygulaması için `Task` modeli ve `TaskSerializer` sınıfının oluşturulması gerekmektedir.
+
+Öncelikle `api/models.py` dosyasında `Task` modelini oluşturun:
+
+```python
+from django.db import models
+from custom_user.models import AppUser
+
+class Task(models.Model):
+    user = models.ForeignKey(AppUser, on_delete=models.CASCADE)
+    title = models.CharField(max_length=200)
+    description = models.TextField(blank=True, null=True)
+    completed = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.title
+
+    class Meta:
+        ordering = ['-created_at']
+```
+
+Daha sonra `api/serializers.py` dosyasında `TaskSerializer` sınıfını oluşturun:
+
+```python
+from rest_framework import serializers
+from .models import Task
+
+class TaskSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Task
+        fields = ['id', 'user', 'title', 'description', 'completed', 'created_at', 'updated_at']
+```
+
+Bu şekilde, `Task` modeli ve ilgili serializer sınıfı `TaskSerializer` oluşturulmuş oldu. Şimdi modelde yapılan değişiklikleri uygulamak için migrasyonları çalıştırabilirsiniz:
+
+```bash
+python manage.py makemigrations api
+python manage.py migrate
+```
+
+Bu işlemler, `Task` modelinin veritabanında oluşturulmasını ve serializer sınıfının API isteklerinde kullanılabilmesini sağlar.
+
+5. maddede, Django Rest Framework ile API view'lerinin oluşturulması ve Task ile ilgili işlemler için gerekli view'lerin oluşturulması hedeflenmektedir. Ayrıca, kullanıcı kayıt, oturum açma ve oturum kapatma işlemleri için de view'ler oluşturulacaktır.
+
+Öncelikle `api/views.py` dosyasında Task ile ilgili view'leri oluşturun:
+
+```python
+from rest_framework import generics, permissions
+from .models import Task
+from .serializers import TaskSerializer
+
+class TaskListCreateView(generics.ListCreateAPIView):
+    queryset = Task.objects.all()
+    serializer_class = TaskSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
+class TaskRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Task.objects.all()
+    serializer_class = TaskSerializer
+    permission_classes = [permissions.IsAuthenticated]
+```
+
+Kullanıcı kayıt, oturum açma ve oturum kapatma işlemleri için view'ler oluşturun. Bu amaçla `custom_user/views.py` dosyasında aşağıdaki kodları kullanabilirsiniz:
+
+```python
+from django.contrib.auth import login, logout
+from rest_framework import generics, permissions, response, status
+from custom_user.models import AppUser
+from custom_user.serializers import UserSerializer, RegisterSerializer, LoginSerializer
+
+class RegisterView(generics.GenericAPIView):
+    serializer_class = RegisterSerializer
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        user = serializer.save()
+        return response.Response({
+            "user": UserSerializer(user, context=self.get_serializer_context()).data,
+            "message": "Kullanıcı başarıyla kaydedildi.",
+        }, status=status.HTTP_201_CREATED)
+
+class LoginView(generics.GenericAPIView):
+    serializer_class = LoginSerializer
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        user = serializer.validated_data
+        login(request, user)
+        return response.Response({
+            "user": UserSerializer(user, context=self.get_serializer_context()).data,
+            "message": "Kullanıcı başarıyla oturum açtı.",
+        }, status=status.HTTP_200_OK)
+
+class LogoutView(generics.GenericAPIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request, *args, **kwargs):
+        logout(request)
+        return response.Response({"message": "Kullanıcı başarıyla oturum kapattı."},
+                                 status=status.HTTP_204_NO_CONTENT)
+```
+
+Son olarak, `backend/urls.py` ve `custom_user/urls.py` dosyalarında gerekli URL yönlendirmelerini yapın.
+
+`backend/urls.py` dosyasında:
+
+```python
+from django.contrib import admin
+from django.urls import path, include
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('api/', include('api.urls')),
+    path('auth/', include('custom_user.urls')),
+]
+```
+
+`custom_user/urls.py` dosyasında:
+
+```python
+from django.urls import path
+from .views import RegisterView, LoginView, LogoutView
+
+urlpatterns = [
+    path('register/', RegisterView.as_view(), name='register'),
+   
+
+
+Özür dilerim, kodda bir hata var gibi görünüyor. `from .models import AppUser` satırının olması gereken yerde olmasına rağmen, `AppUser` modeli gerçekten de kodda kullanılmamış. Bunun yerine, `AppUser` modeli, `UserSerializer`, `RegisterSerializer` ve `LoginSerializer` sınıflarında kullanılıyor. Bu sınıflar, `backend\custom_user\serializers.py` dosyasında tanımlanır ve `backend\custom_user\views.py` dosyasında kullanılır. 
+
+Dolayısıyla, `backend\custom_user\views.py` dosyasında `from .models import AppUser` satırına gerek yoktur. Bu satırı kaldırarak kodunuzu şu şekilde güncelleyebilirsiniz:
+
+```python
+from django.contrib.auth import login, logout
+from rest_framework import generics, permissions, response, status
+from .serializers import UserSerializer, RegisterSerializer, LoginSerializer
+
+class RegisterView(generics.GenericAPIView):
+    serializer_class = RegisterSerializer
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        user = serializer.save()
+        return response.Response({
+            "user": UserSerializer(user, context=self.get_serializer_context()).data,
+            "message": "Kullanıcı başarıyla kaydedildi.",
+        }, status=status.HTTP_201_CREATED)
+
+class LoginView(generics.GenericAPIView):
+    serializer_class = LoginSerializer
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        user = serializer.validated_data
+        login(request, user)
+        return response.Response({
+            "user": UserSerializer(user, context=self.get_serializer_context()).data,
+            "message": "Kullanıcı başarıyla oturum açtı.",
+        }, status=status.HTTP_200_OK)
+
+class LogoutView(generics.GenericAPIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request, *args, **kwargs):
+        logout(request)
+        return response.Response({"message": "Kullanıcı başarıyla oturum kapattı."},
+                                 status=status.HTTP_204_NO_CONTENT)
+```
+
+Böylece, `backend\custom_user\views.py` dosyasında `AppUser` modeli doğrudan kullanılmadığı için, bu satırın koddan kaldırılması gerekmektedir.
+
+
+
+`backend\api\views.py` dosyasında tanımlanan `TaskListCreateView` ve `TaskRetrieveUpdateDestroyView` sınıfları için uygun URL yapılandırmasını oluşturmak istiyorsanız, `backend\api\urls.py` dosyasını aşağıdaki gibi düzenleyebilirsiniz:
+
+```python
+from django.urls import path
+from . import views
+
+urlpatterns = [
+    path('tasks/', views.TaskListCreateView.as_view(), name='tasks_list_create'),
+    path('tasks/<int:pk>/', views.TaskRetrieveUpdateDestroyView.as_view(), name='task_retrieve_update_destroy'),
+]
+```
+
+Bu yapılandırmada, iki URL yolu oluşturduk:
+
+1. `/tasks/` URL'si, `TaskListCreateView` sınıfını kullanarak görevleri listeleyen ve yeni görevler oluşturan bir API noktası sağlar.
+2. `/tasks/<int:pk>/` URL'si, `TaskRetrieveUpdateDestroyView` sınıfını kullanarak belirli bir görevin ayrıntılarını almanıza, görevi güncellemenize ve görevi silmenize olanak tanır. Burada `<int:pk>` ifadesi, görevin veritabanındaki birincil anahtarını (ID'sini) temsil eder.
+
+
+
+6. maddede, Django ve Django Rest Framework için URL yapılandırmalarını yapmanız ve view'leri ve işlemleri URL'lerle eşleştirmeniz gerekmektedir. Bu adım için, öncelikle ana URL yapılandırmasını ayarlamalı ve ardından custom_user ve api uygulamaları için yapılandırmaları eklemelisiniz.
+
+1. Ana URL yapılandırması (`backend\mytasks\urls.py`):
+
+```python
+from django.contrib import admin
+from django.urls import path, include
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('api/auth/', include('custom_user.urls')),
+    path('api/', include('api.urls')),
+]
+```
+
+Bu yapılandırmada, öncelikle Django yönetici paneli için URL ayarladık. Ardından, `custom_user` ve `api` uygulamaları için URL yapılandırmalarını ekledik.
+
+2. `custom_user` URL yapılandırması (`backend\custom_user\urls.py`):
+
+```python
+from django.urls import path
+from . import views
+
+urlpatterns = [
+    path('register/', views.RegisterView.as_view(), name='register'),
+    path('login/', views.LoginView.as_view(), name='login'),
+    path('logout/', views.LogoutView.as_view(), name='logout'),
+]
+```
+
+Bu yapılandırmada, kullanıcı kayıt, oturum açma ve oturum kapatma işlemleri için URL'ler ayarladık.
+
+3. `api` URL yapılandırması (`backend\api\urls.py`):
+
+```python
+from django.urls import path
+from . import views
+
+urlpatterns = [
+    path('tasks/', views.TaskListCreateView.as_view(), name='tasks_list_create'),
+    path('tasks/<int:pk>/', views.TaskRetrieveUpdateDestroyView.as_view(), name='task_retrieve_update_destroy'),
+]
+```
+
+Bu yapılandırmada, görev listeleme, oluşturma, güncelleme ve silme işlemleri için URL'ler ayarladık.
+
+Bu şekilde, URL yapılandırmalarını ve yönlendirmeleri başarıyla ayarlamış olacaksınız. Bu yapılandırmalar, view'lerin ve işlemlerin uygun URL'lerle eşleşmesini sağlar.
+
+*****************************
+{
+    "user": {
+        "id": 3,
+        "email": "selimkocak@gmail.com",
+        "first_name": "selim",
+        "last_name": "koçak"
+    },
+    "message": "Kullanıcı başarıyla kaydedildi."
+}
+
+*****************************************************
+
+Frontend tarafında, aşağıdaki gibi bir klasör ve dosya yapısı öneriyorum:
+
+```
+frontend
+├── node_modules
+├── public
+│   ├── favicon.ico
+│   ├── index.html
+│   ├── logo192.png
+│   ├── logo512.png
+│   ├── manifest.json
+│   └── robots.txt
+├── src
+│   ├── components
+│   │   ├── Auth
+│   │   │   ├── LoginForm.js
+│   │   │   ├── Logout.js
+│   │   │   └── RegisterForm.js
+│   │   ├── Tasks
+│   │   │   ├── TaskCreate.js
+│   │   │   ├── TaskDelete.js
+│   │   │   ├── TaskEdit.js
+│   │   │   ├── TaskItem.js
+│   │   │   └── TaskList.js
+│   │   └── Navbar.js
+│   ├── services
+│   │   └── api.js
+│   ├── utils
+│   │   ├── auth.js
+│   │   └── protectedRoute.js
+│   ├── App.css
+│   ├── App.js
+│   ├── index.css
+│   ├── index.js
+│   └── reportWebVitals.js
+├── .gitignore
+├── package-lock.json
+├── package.json
+└── README.md
+```
+
+Açıklamalar:
+
+- `src/components`: Bu klasörde, uygulamanın React bileşenlerini (komponentlerini) bulundurun.
+    - `Auth`: Kullanıcı kayıt, giriş ve çıkış işlemleri için bileşenler.
+    - `Tasks`: Görev listesi, oluşturma, düzenleme ve silme işlemleri için bileşenler.
+    - `Navbar.js`: Ana navigasyon bileşeni.
+- `src/services`: Uygulama servislerini içeren klasör.
+    - `api.js`: Axios ile API isteklerini yönetmek için kullanılır.
+- `src/utils`: Yardımcı fonksiyon ve bileşenlerin bulunduğu klasör.
+    - `auth.js`: Kimlik doğrulama işlemleri ve yerel depolama yönetimi için kullanılır.
+    - `protectedRoute.js`: Yetkili kullanıcıların erişebileceği rotaları yönetir.
+
+Bu yapı, projenizin ihtiyaçlarını karşılayacak şekilde düzenlenebilir ve genişletilebilir.
+
+1. Node.js ve npm (Node Package Manager) kurulumu:
+
+MyTasks projesinin frontend tarafını geliştirmeye başlamadan önce, Node.js ve npm'i (Node Package Manager) sisteminize kurmanız gerekmektedir. Bu adım, projede kullanılacak JavaScript kütüphanelerini ve bağımlılıklarını yönetmenize olanak tanır.
+
+Node.js ve npm'i kurmak için aşağıdaki adımları izleyin:
+
+1.1. Node.js'in resmi web sitesine gidin: https://nodejs.org/
+1.2. Sayfadaki "Recommended for most users" sürümünü seçerek uygun Node.js sürümünü indirin (bu sürüm daha kararlıdır ve genellikle daha az hata içerir).
+1.3. İndirilen Node.js yükleyicisini çalıştırın ve kurulum talimatlarını izleyerek Node.js ve npm'i sisteminize kurun.
+
+Kurulumun başarılı olduğunu doğrulamak için terminal veya komut istemcisinde aşağıdaki komutları çalıştırın:
+
+```
+node -v
+```
+
+Bu komut, kurulu Node.js sürümünü göstermelidir.
+
+```
+npm -v
+```
+
+Bu komut, kurulu npm sürümünü göstermelidir.
+
+Node.js ve npm başarıyla kurulduktan sonra, iş planındaki diğer adımlara devam edebilirsiniz.
+
+2. React uygulaması oluşturma (`create-react-app` kullanarak):
+
+React uygulamanızı oluşturmak için, öncelikle `create-react-app` adlı aracı kullanacağız. Bu araç, React uygulamaları için başlangıç ​​şablonu sağlar ve geliştirme sürecini hızlandırır.
+
+Terminal veya komut istemcisinde aşağıdaki adımları izleyerek React uygulamanızı oluşturun:
+
+2.1. İlk olarak, `create-react-app` paketini global olarak yükleyin:
+
+```
+npm install -g create-react-app
+```
+
+2.2. Daha sonra, istediğiniz bir klasörde, aşağıdaki komutu çalıştırarak yeni bir React uygulaması oluşturun:
+
+```
+create-react-app mytasks-frontend
+```
+
+Bu komut, `mytasks-frontend` adlı bir klasör oluşturacak ve bu klasörde React uygulamanızın temel dosya ve klasör yapısını oluşturacaktır.
+
+2.3. Oluşturulan React uygulamasına geçin:
+
+```
+cd mytasks-frontend
+```
+
+2.4. React uygulamanızı yerel bir sunucuda çalıştırmak için aşağıdaki komutu kullanın:
+
+```
+npm start
+```
+
+Bu komut, React uygulamanızı başlatır ve tarayıcınızda otomatik olarak açar. Uygulama varsayılan olarak `http://localhost:3000` adresinde çalışır.
+
+Artık React uygulamanız başarıyla oluşturuldu ve çalışıyor. İş planındaki diğer adımları takip ederek uygulamanızı geliştirmeye devam edebilirsiniz.
+
+
+4. Ana bileşenlerin (App.js) ve yardımcı bileşenlerin oluşturulması:
+
+İş planına göre, React uygulamasında aşağıdaki bileşenler oluşturulacaktır:
+
+- Auth
+  - LoginForm
+  - Logout
+  - RegisterForm
+- Tasks
+  - TaskCreate
+  - TaskDelete
+  - TaskEdit
+  - TaskItem
+  - TaskList
+- Navbar
+
+Bu bileşenleri oluşturmak için, önce ilgili klasör ve dosyaları oluşturun ve ardından bileşenlerin temel yapılarını tanımlayın.
+
+Örnek olarak, LoginForm bileşeninin temel yapısını şu şekilde oluşturabilirsiniz:
+
+`frontend\src\components\Auth\LoginForm.js`:
+
+```javascript
+import React, { useState } from 'react';
+
+function LoginForm() {
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        // Oturum açma işlemleri yapılacak
+    };
+
+    return (
+        <div>
+            <form onSubmit={handleSubmit}>
+                <label htmlFor="username">Kullanıcı Adı:</label>
+                <input
+                    type="text"
+                    id="username"
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                />
+                <label htmlFor="password">Parola:</label>
+                <input
+                    type="password"
+                    id="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                />
+                <button type="submit">Giriş</button>
+            </form>
+        </div>
+    );
+}
+
+export default LoginForm;
+```
+
+Diğer bileşenleri de benzer şekilde oluşturarak başlayabilirsiniz. Ardından, ana bileşen olan `App.js` dosyasında bu bileşenleri ve react-router-dom'u kullanarak uygulamanın yönlendirmesini ayarlayın.
+
+`frontend\src\App.js`:
+
+```javascript
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import Navbar from './components/Navbar';
+import LoginForm from './components/Auth/LoginForm';
+import RegisterForm from './components/Auth/RegisterForm';
+import TaskList from './components/Tasks/TaskList';
+import TaskCreate from './components/Tasks/TaskCreate';
+import TaskEdit from './components/Tasks/TaskEdit';
+import TaskDelete from './components/Tasks/TaskDelete';
+import Logout from './components/Auth/Logout';
+
+function App() {
+    return (
+        <Router>
+            <div>
+                <Navbar />
+                <Switch>
+                    <Route exact path="/" component={TaskList} />
+                    <Route path="/create" component={TaskCreate} />
+                    <Route path="/edit/:id" component={TaskEdit} />
+                    <Route path="/delete/:id" component={TaskDelete} />
+                    <Route path="/login" component={LoginForm} />
+                    <Route path="/register" component={RegisterForm} />
+                    <Route path="/logout" component={Logout} />
+                </Switch>
+            </div>
+        </Router>
+    );
+}
+
+export default App;
+```
+
+Bu yapı ile, uygulamanızın temel bileşenlerini ve yönlendirmeyi ayarlamış olursunuz. İlerleyen adımlarda, bu bileşenlere işlevsellik ekleyeceksiniz
+
+
+
+
+API tarafında kimlik doğrulama ve yetkilendirme işlemleri için Django REST framework ve SimpleJWT paketlerini kullanarak JSON Web Token (JWT) tabanlı kimlik doğrulama gerçekleştireceğiz. Aşağıda, API tarafında kimlik doğrulama ve yetkilendirme işlemlerini gerçekleştirmek için gerekli adımlar ve kodları bulunmaktadır.
+
+1. Django REST framework ve SimpleJWT paketlerini yükleyin:
+
+```bash
+pip install djangorestframework djangorestframework_simplejwt
+```
+
+2. `backend\settings.py` dosyasında `INSTALLED_APPS` listesine `rest_framework` ekleyin:
+
+```python
+INSTALLED_APPS = [
+    # ...
+    'rest_framework',
+]
+```
+
+3. `backend\settings.py` dosyasında REST framework için kimlik doğrulama ayarlarını yapılandırın:
+
+```python
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    )
+}
+```
+
+4. JWT ayarlarını `backend\settings.py` dosyasına ekleyin:
+
+```python
+from datetime import timedelta
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+    'ROTATE_REFRESH_TOKENS': False,
+    'BLACKLIST_AFTER_ROTATION': True,
+    'UPDATE_LAST_LOGIN': True,
+
+    'ALGORITHM': 'HS256',
+    'SIGNING_KEY': SECRET_KEY,
+    'VERIFYING_KEY': None,
+    'AUDIENCE': None,
+    'ISSUER': None,
+
+    'AUTH_HEADER_TYPES': ('Bearer',),
+    'AUTH_HEADER_NAME': 'HTTP_AUTHORIZATION',
+    'USER_ID_FIELD': 'id',
+    'USER_ID_CLAIM': 'user_id',
+
+    'AUTH_TOKEN_CLASSES': ('rest_framework_simplejwt.tokens.AccessToken',),
+    'TOKEN_TYPE_CLAIM': 'token_type',
+
+    'JTI_CLAIM': 'jti',
+
+    'SLIDING_TOKEN_REFRESH_EXP_CLAIM': 'refresh_exp',
+    'SLIDING_TOKEN_LIFETIME': timedelta(minutes=60),
+    'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=1),
+}
+```
+
+5. Bu adımdan sonra, `backend\mytasks\urls.py` dosyasında JWT ile ilgili URL'leri eklediğinizi ve `custom_user` ve `api` uygulamalarında kimlik doğrulama ve yetkilendirmeyi sağlayan URL'leri ve görünümleri oluşturduğunuzu gördüm. Bu kodlarla API tarafında kimlik doğrulama ve yetkilendirme işlemleri gerçekleştirilmeye hazırdır.
+
+Yukarıdaki adımlar ve kodlar, Django REST framework ve SimpleJWT kullanarak API tarafında kimlik doğrulama ve yetkilendirme işlemlerini gerçekleştirmenize olanak sağlar. Artık API isteklerinde JWT token'larını kullanarak kullanıcı kimliğini doğrulayabilir ve yetkili kullanıcılara erişim sağlayabilirsiniz.
+
+
+MyTasks projesinde kullanıcıların yalnızca yetkili oldukları işlemlere erişimini sağlamak için izinleri yönetelim. Django REST framework, izinlerin yönetilmesine yardımcı olacak bazı temel izin sınıfları sunar. Aşağıda, bu izin sınıflarını kullanarak kullanıcıların yetkili oldukları işlemlere erişimini sağlamak için gerekli adımlar ve kodları bulunmaktadır.
+
+1. Öncelikle, `api` uygulamasında `permissions.py` adında yeni bir dosya oluşturun. Bu dosyada özel izin sınıflarını tanımlayacağız.
+
+2. Kullanıcıların sadece kendi görevlerine erişebilmelerini sağlamak için `IsTaskOwner` adında bir izin sınıfı oluşturun. Bu sınıf, `permissions.py` dosyasında tanımlanmalıdır:
+
+```python
+from rest_framework import permissions
+
+class IsTaskOwner(permissions.BasePermission):
+    def has_object_permission(self, request, view, obj):
+        return obj.owner == request.user
+```
+
+3. İlgili izinleri uygulamak için API görünümlerini güncelleyin. `api\views.py` dosyasında, `IsTaskOwner` izin sınıfını içe aktarın ve bu izni `TaskRetrieveUpdateDestroyView` görünümüne uygulayın:
+
+```python
+from rest_framework import generics, permissions
+from .models import Task
+from .serializers import TaskSerializer
+from .permissions import IsTaskOwner
+
+class TaskListCreateView(generics.ListCreateAPIView):
+    queryset = Task.objects.all()
+    serializer_class = TaskSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def perform_create(self, serializer):
+        serializer.save(owner=self.request.user)
+
+class TaskRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Task.objects.all()
+    serializer_class = TaskSerializer
+    permission_classes = [permissions.IsAuthenticated, IsTaskOwner]
+```
+
+Bu kodlar sayesinde, kullanıcılar sadece kendi görevlerine erişebilir ve bu görevleri güncelleyip silebilirler. Diğer kullanıcıların görevlerine erişemezler.
+
+4. Gerekirse, `permissions.py` dosyasında daha fazla özel izin sınıfı tanımlayabilir ve bunları görünümlere uygulayarak kullanıcıların yetkili oldukları işlemlere erişimini sağlayabilirsiniz.
+
+Yukarıdaki adımlar ve kodlar, MyTasks projesinde kullanıcıların yetkili oldukları işlemlere erişimini sağlamak için izinlerin yönetilmesine yardımcı olur. Django REST framework ve özel izin sınıfları kullanarak, kullanıcıların yalnızca yetkili oldukları işlemlere erişmelerini sağlayabilirsiniz.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
