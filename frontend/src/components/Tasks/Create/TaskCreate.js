@@ -49,13 +49,14 @@ function TaskCreate({ onTaskCreated, userId }) {
         const token = localStorage.getItem('access_token');
         const userTeamMemberships = await getUserTeamMembership(token);
         setUserTeams(userTeamMemberships.data);
+        console.log('User Teams:', userTeamMemberships.data); // Bu satırı ekleyin
       } catch (error) {
         console.error('Error fetching user teams:', error);
       }
     };
     fetchUserTeams();
   }, []);
-  
+    
    
 return (
     <>
@@ -94,22 +95,21 @@ return (
                 <option value="Tamamlanan">Tamamlanan</option>
               </FormControl>
               <FormGroup>
-              <FormLabel htmlFor="team_membership">Team Membership:</FormLabel>
-              <FormControl
-                as="select"
-                id="team_membership"
-                value={team_membership}
-                onChange={handleChange}
-              >
-                <option value="">Select a Team</option>
-                {userTeams.map((team) => (
-                <option key={team.id} value={team.id}>
-                  {team.team_name} 
-                </option>
-              ))}
-
-              </FormControl>
-            </FormGroup>
+                <FormLabel htmlFor="team_membership">Team Membership:</FormLabel>
+                <FormControl
+                  as="select"
+                  id="team_membership"
+                  value={team_membership}
+                  onChange={handleChange}
+                >
+                  <option value="">Select a Team</option>
+                  {userTeams.map((team) => (
+                    <option key={team.id} value={team.id}>
+                      {team.team_name} 
+                    </option>
+                  ))}
+                </FormControl>
+              </FormGroup>
               <FormLabel htmlFor="deadline">Deadline:</FormLabel>
               <FormControl
                 type="date"

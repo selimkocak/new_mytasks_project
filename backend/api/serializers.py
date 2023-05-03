@@ -13,8 +13,6 @@ class MembershipSerializer(serializers.ModelSerializer):
         model = Membership
         fields = ['user', 'team', 'role']
 
-
-
 class TaskSerializer(serializers.ModelSerializer):
     user = serializers.HiddenField(default=serializers.CurrentUserDefault())
     username = serializers.StringRelatedField(source='user.first_name')

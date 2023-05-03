@@ -13,7 +13,6 @@ class IsTeamManager(permissions.BasePermission):
         membership = obj.memberships.filter(user=request.user, role=Role.TEAM_MANAGER.value).first()
         return membership is not None
 
-
 class IsAdminUser(permissions.BasePermission):
     def has_permission(self, request, view):
         return request.user.role == Role.ADMIN.value

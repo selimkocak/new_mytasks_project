@@ -56,11 +56,13 @@ export const deleteTask = async (id, token) => {
   }
 };
 
-export const createUser = async (email, password) => {
+export const createUser = async (email, password, first_name, last_name) => {
   try {
     const response = await api.post('/custom_user/register/', {
       email,
       password,
+      first_name,
+      last_name,
     });
     return response;
   } catch (error) {
@@ -206,11 +208,12 @@ export const getUserEmail = async () => {
   }
 };
 
-// kullanıcıların üye oldukları takım listesi için fonksiyon
+// kullanıcıların üye oldukları takım listesi için fonksiyon frontend\src\services\api.js
 export const getUserTeamMembership = (token) => {
-  return api.get(`/custom_user/teams/`, {
+  return api.get(`/custom_user/filtered_teams/`, {
     headers: {
       'Authorization': `Bearer ${token}`,
     },
   });
 };
+

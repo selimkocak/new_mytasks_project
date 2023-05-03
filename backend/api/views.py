@@ -18,12 +18,33 @@ class TaskViewSet(viewsets.ModelViewSet):
         user = self.request.user
         return Task.objects.filter(user=user)
 
+    def get_user_teams(self, user):
+        manager_teams = user.manager_teams.filter(membership__user=user)
+        member_teams = user.member_teams.filter(membership__user=user)
+        return manager_teams.union(member_teams)
+
     def create(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save(user=self.request.user)
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        user_teams = self.get_user_teams(request.user)
+        team_membership_id = request.data.get('team_membership')
+
+        if team_membership_id:
+            team_membership = Team.objects.filter(pk=team_membership_id).first()
+            if team_membership and team_membership in user_teams:
+                serializer = self.get_serializer(data=request.data)
+                if serializer.is_valid():
+                    serializer.save(user=self.request.user)
+                    return Response(serializer.data, status=status.HTTP_201_CREATED)
+                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            else:
+                return Response({"detail": "İzin verilmeyen takım"}, status=status.HTTP_403_FORBIDDEN)
+        else:
+            serializer = self.get_serializer(data=request.data)
+            if serializer.is_valid():
+                serializer.save(user=self.request.user)
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
 
 class TeamViewSet(viewsets.ModelViewSet):
     queryset = Team.objects.all()
@@ -31,13 +52,25 @@ class TeamViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated, IsTeamManager | permissions.IsAdminUser]
 
     def create(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
-        if serializer.is_valid():
-            team = serializer.save()
-            team_membership = Membership(user=request.user, team=team, role=Role.TEAM_MANAGER.value)
-            team_membership.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        user_teams = self.get_user_teams(request.user)
+        team_membership_id = request.data.get('team_membership')
+        if team_membership_id:
+            team_membership = Membership.objects.filter(pk=team_membership_id).first()
+            if team_membership and team_membership.team in user_teams:
+                serializer = self.get_serializer(data=request.data)
+                if serializer.is_valid():
+                    serializer.save(user=self.request.user)
+                    return Response(serializer.data, status=status.HTTP_201_CREATED)
+                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            else:
+                return Response({"detail": "İzin verilmeyen takım"}, status=status.HTTP_403_FORBIDDEN)
+        else:
+            serializer = self.get_serializer(data=request.data)
+            if serializer.is_valid():
+                serializer.save(user=self.request.user)
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 
     def get_permissions(self):
@@ -57,6 +90,17 @@ class UserTeamsAPIView(generics.ListAPIView):
 
     def get_queryset(self):
         user = self.request.user
-        manager_teams = user.manager_teams.all()
-        member_teams = user.member_teams.all()
+        manager_teams = user.manager_teams.filter(membership__user=user)
+        member_teams = user.member_teams.filter(membership__user=user)
+
+        return manager_teams.union(member_teams)
+
+class UserFilteredTeamsAPIView(generics.ListAPIView):
+    serializer_class = TeamSerializer
+    permission_classes = (IsAuthenticated,)
+
+    def get_queryset(self):
+        user = self.request.user
+        manager_teams = user.manager_teams.filter(membership__user=user)
+        member_teams = user.member_teams.filter(membership__user=user)
         return manager_teams.union(member_teams)

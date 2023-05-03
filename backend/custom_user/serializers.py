@@ -14,12 +14,12 @@ class UserSerializer(serializers.ModelSerializer):
 
 class RegisterSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True, required=True, style={'input_type': 'password'})
-    role = serializers.ChoiceField(choices=[(role.value, role.value) for role in Role], required=False, default=Role.TEAM_MEMBER.value)
+
 
     class Meta:
         model = AppUser
-        fields = ('email', 'password', 'first_name', 'last_name', 'role')
-        extra_kwargs = {'first_name': {'required': False}, 'last_name': {'required': False}}
+        fields = ('email', 'password', 'first_name', 'last_name')
+      
 
     def create(self, validated_data):
         email = validated_data.pop('email')
