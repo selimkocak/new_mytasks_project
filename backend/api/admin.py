@@ -6,9 +6,9 @@ class MembershipInline(admin.TabularInline):  # MembershipInline sınıfını ol
     extra = 0
 
 class TaskAdmin(admin.ModelAdmin):
-    list_display = ('id', 'title', 'user', 'status', 'deadline', 'team_membership', 'created_at', 'updated_at')
-    list_filter = ('status', 'user', 'team_membership')
-    search_fields = ('title', 'user__email', 'team_membership__team_name')  # user ve team_membership ile ilişkili alanları arama yapmak için ekleyin
+    list_display = ('id', 'title', 'user', 'status', 'deadline', 'team', 'created_at', 'updated_at')
+    list_filter = ('status', 'user', 'team')
+    search_fields = ('title', 'user__email', 'team__team_name')  # user ve team_membership ile ilişkili alanları arama yapmak için ekleyin
     readonly_fields = ('created_at', 'updated_at')
 
 class TeamAdmin(admin.ModelAdmin):

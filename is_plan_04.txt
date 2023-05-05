@@ -1,0 +1,42 @@
+Aşağıdaki iş planı, istediğiniz özellikleri eklemek ve proje üzerinde çalışırken daha düzenli olmak için kullanabilirsiniz.
+
++1. Task modelindeki `team_membership` alanını `team` olarak değiştirin ve ForeignKey ilişkisini `Team` modeline ayarlayın.
++2. `Task` modeline `viewers` adında bir ManyToManyField alanı ekleyin, `AppUser` modelini hedef alın ve `related_name` olarak 'viewed_tasks' kullanın.
++3. TaskViewSet içerisinde `get_queryset` metodunu, kullanıcının hem sahibi olduğu hem de izleyici olarak eklendiği görevleri döndürecek şekilde güncelleyin.
++4. TaskViewSet içerisinde `create` ve `update` metodlarını, görevi oluşturan veya düzenleyen kullanıcının takım üyeleri arasında olduğunu doğrulayacak şekilde güncelleyin.
++5. TaskViewSet içerisindeki `permission_classes` listesine `IsTeamLeader` adında yeni bir permission class ekleyin.
++6. `IsTeamLeader` permission classını backend\api\permissions.py içerisinde tanımlayın.
++7. `IsTeamLeader` permission classında, kullanıcının takım lideri olup olmadığını kontrol eden bir `has_permission` metodu tanımlayın.
++8. TaskViewSet içerisinde `destroy` ve `partial_update` metodlarını, sadece takım lideri veya görevin sahibi olduğunda çalışacak şekilde güncelleyin.
++9. `UserTeamsAPIView` ve `UserFilteredTeamsAPIView` sınıflarını backend\api\views.py içerisinde birleştirin ve tek bir sınıf haline getirin.
++10. Yeni birleştirilmiş sınıfın queryset'i, kullanıcının hem yönetici hem de üye olduğu takımları döndürecek şekilde güncelleyin.
++11. TeamViewSet içerisinde `create` metodunu, takımın liderini otomatik olarak takım üyelerine ekleyecek şekilde güncelleyin.
++12. TeamViewSet içerisinde `update` metodunu, takım liderini değiştiren kullanıcıların sadece takımın mevcut lideri veya yönetici olduğunu doğrulayacak şekilde güncelleyin.
++13. TeamViewSet içerisindeki `permission_classes` listesine `IsTeamLeaderOrAdmin` adında yeni bir permission class ekleyin.
++14. `IsTeamLeaderOrAdmin` permission classını backend\api\permissions.py içerisinde tanımlayın.
++15. `IsTeamLeaderOrAdmin` permission classında, kullanıcının takım lideri veya yönetici olup olmadığını kontrol eden bir `has_permission` metodu tanımlayın.
++16. TeamViewSet içerisinde `partial_update` ve `destroy` metodlarını, sadece takım lideri veya yönetici olduğunda çalışacak şekilde güncelleyin.
++17. TaskViewSet'te, takım lideri tarafından oluşturulan görevlerin otomatik olarak takımın tüm üyelerine görünür olmasını sağlayacak şekilde güncelleyin.
++18. TaskViewSet içerisinde `list` metodunu, görevlerin takım üyelerine göre filtrelenmesini sağlayacak şekilde güncelleyin.
++19. `Team` modeline, takımın liderini ve üyelerini değiştiren fonksiyonlar (ör. `add_member`, `remove_member`, `set_leader`) ekleyin.
++20. `AppUser` modeline, kullanıcının takıma üye olup olmadığını kontrol eden bir fonksiyon (ör. `is_member_of_team`) ekleyin.
++21. TaskViewSet içerisinde, görevlerin filtrelenmesi için yeni bir fonksiyon (ör. `filter_tasks_by_team`) ekleyin ve bu fonksiyonu `list` metodunda kullanın.
++22. TaskViewSet içerisinde, görevlerin takım üyelerine atanmasını sağlayacak bir fonksiyon (ör. `assign_task_to_team_members`) ekleyin ve bu fonksiyonu `create` metodunda kullanın.
+23. TaskViewSet içerisinde, görevlerin takım üyelerinden kaldırılmasını sağlayacak bir fonksiyon (ör. `remove_task_from_team_members`) ekleyin ve bu fonksiyonu `destroy` metodunda kullanın.
+24. `Task` modelinde, görevin durumunu güncelleyen bir fonksiyon (ör. `update_status`) ekleyin ve bu fonksiyonu TaskViewSet içerisinde kullanın.
+25. TaskViewSet içerisinde, görevlerin takım lideri tarafından yönetilmesini sağlayacak `retrieve`, `update` ve `destroy` metodlarını düzenleyin.
+26. TaskViewSet içerisinde, takım lideri ve üyelerin görevleri görüntülemesini sağlayacak şekilde `retrieve` metodunu güncelleyin.
+27. TaskViewSet içerisinde, görevleri tamamlayan ve takım üyelerine görev atayan fonksiyonlar (ör. `complete_task`, `assign_task_to_member`) ekleyin.
+28. TaskViewSet içerisinde, görevlerin sıralanması için gerekli parametreleri (ör. tarih, durum) alan ve kullanıcıya göre filtreleyen bir fonksiyon (ör. `order_tasks_by_params`) ekleyin.
+29. TaskViewSet içerisinde, görevlerin sıralanması ve filtrelenmesi için yeni bir fonksiyon (ör. `filter_and_order_tasks`) ekleyin ve bu fonksiyonu `list` metodunda kullanın.
+30. `Team` modelinde, takımın proje süresini ve görevlerin sürelerini hesaplayan bir fonksiyon (ör. `calculate_project_duration`) ekleyin.
+31. TaskViewSet içerisinde, görevlerin sürelerini ve takımın proje süresini hesaplayan bir fonksiyon (ör. `calculate_durations`) ekleyin ve bu fonksiyonu `list` metodunda kullanın.
+32. `Team` modelinde, takımın performansını değerlendiren bir fonksiyon (ör. `evaluate_performance`) ekleyin.
+33. TaskViewSet içerisinde, takımın performansını değerlendiren bir fonksiyon (ör. `evaluate_team_performance`) ekleyin ve bu fonksiyonu `list` metodunda kullanın.
+34. TaskViewSet içerisinde, takım üyelerinin performansını değerlendiren bir fonksiyon (ör. `evaluate_member_performance`) ekleyin ve bu fonksiyonu `list` metodunda kullanın.
+35. TaskViewSet içerisinde, kullanıcıların kendi görevlerini ve takım görevlerini görüntüleyebilmesi için `list` metodunu güncelleyin.
+36. TaskViewSet içerisinde, kullanıcıların kendi görevlerini ve takım görevlerini tamamlayabilmesi için `update` metodunu güncelleyin.
+37. TaskViewSet içerisinde, kullanıcıların kendi görevlerini ve takım görevlerini silebilmesi için `destroy` metodunu güncelleyin.
+38. TaskViewSet içerisinde, kullanıcıların görevlerini ve takım görevlerini durumlarına göre filtreleyebilmeleri için `list` metodunu güncelleyin.
+39. TaskViewSet içerisinde, kullanıcıların görevlerini ve takım görevlerini tarihlerine göre sıralayabilmeleri için `list` metodunu güncelleyin.
+40. Son olarak, tüm işlemleri test edin ve gerekli düzeltmeleri yaparak projeyi tamamlayın.

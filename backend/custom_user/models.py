@@ -59,6 +59,10 @@ class AppUser(AbstractBaseUser, PermissionsMixin):
     REQUIRED_FIELDS = []
 
     objects = AppUserManager()
+   
+    def is_member_of_team(self, team):
+        return team.members.filter(pk=self.pk).exists()
 
     def __str__(self):
         return self.email
+    

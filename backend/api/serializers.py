@@ -4,7 +4,6 @@ from .models import Task, Team, Membership
 from custom_user.models import AppUser
 from custom_user.serializers import UserSerializer
 
-
 class MembershipSerializer(serializers.ModelSerializer):
     user = UserSerializer()  # Burada UserSerializer sınıfını kullanarak kullanıcı bilgilerini alıyoruz
     team = serializers.StringRelatedField()
@@ -23,8 +22,9 @@ class TaskSerializer(serializers.ModelSerializer):
 
 class TeamSerializer(serializers.ModelSerializer):
     team_manager = serializers.SlugRelatedField(slug_field='email', queryset=AppUser.objects.all())
+    team_leader = serializers.SlugRelatedField(slug_field='email', read_only=True)
     team_members = serializers.SlugRelatedField(slug_field='email', queryset=AppUser.objects.all(), many=True)
 
     class Meta:
         model = Team
-        fields = ['id', 'team_name', 'team_manager', 'team_members', 'team_color', 'team_symbol']
+        fields = ['id', 'team_name', 'team_manager', 'team_leader', 'team_members', 'team_color', 'team_symbol']
