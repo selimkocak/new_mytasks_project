@@ -22,7 +22,7 @@ Aşağıdaki iş planı, istediğiniz özellikleri eklemek ve proje üzerinde ç
 +20. `AppUser` modeline, kullanıcının takıma üye olup olmadığını kontrol eden bir fonksiyon (ör. `is_member_of_team`) ekleyin.
 +21. TaskViewSet içerisinde, görevlerin filtrelenmesi için yeni bir fonksiyon (ör. `filter_tasks_by_team`) ekleyin ve bu fonksiyonu `list` metodunda kullanın.
 +22. TaskViewSet içerisinde, görevlerin takım üyelerine atanmasını sağlayacak bir fonksiyon (ör. `assign_task_to_team_members`) ekleyin ve bu fonksiyonu `create` metodunda kullanın.
-23. TaskViewSet içerisinde, görevlerin takım üyelerinden kaldırılmasını sağlayacak bir fonksiyon (ör. `remove_task_from_team_members`) ekleyin ve bu fonksiyonu `destroy` metodunda kullanın.
++23. TaskViewSet içerisinde, görevlerin takım üyelerinden kaldırılmasını sağlayacak bir fonksiyon (ör. `remove_task_from_team_members`) ekleyin ve bu fonksiyonu `destroy` metodunda kullanın.
 24. `Task` modelinde, görevin durumunu güncelleyen bir fonksiyon (ör. `update_status`) ekleyin ve bu fonksiyonu TaskViewSet içerisinde kullanın.
 25. TaskViewSet içerisinde, görevlerin takım lideri tarafından yönetilmesini sağlayacak `retrieve`, `update` ve `destroy` metodlarını düzenleyin.
 26. TaskViewSet içerisinde, takım lideri ve üyelerin görevleri görüntülemesini sağlayacak şekilde `retrieve` metodunu güncelleyin.
@@ -40,3 +40,19 @@ Aşağıdaki iş planı, istediğiniz özellikleri eklemek ve proje üzerinde ç
 38. TaskViewSet içerisinde, kullanıcıların görevlerini ve takım görevlerini durumlarına göre filtreleyebilmeleri için `list` metodunu güncelleyin.
 39. TaskViewSet içerisinde, kullanıcıların görevlerini ve takım görevlerini tarihlerine göre sıralayabilmeleri için `list` metodunu güncelleyin.
 40. Son olarak, tüm işlemleri test edin ve gerekli düzeltmeleri yaparak projeyi tamamlayın.
+
+Kodunuzu inceleyemediğim için doğrudan hatalı kısımları belirleyemiyorum, ancak son 17 maddeden bazılarını iş planınıza nasıl ekleyeceğinize dair önerilerde bulunabilirim.
+
+24. `update_status` fonksiyonunu Task modeline ekledikten sonra, TaskViewSet içinde `update` metodunu güncellemelisiniz. Bu fonksiyonu kullanarak görevin durumunu güncelleyin.
+25. `retrieve`, `update` ve `destroy` metodlarını, sadece takım liderinin görevleri yönetebileceği şekilde güncellemek için, önceden oluşturulan `IsTeamLeader` permission class'ını kullanın.
+26. `retrieve` metodunu güncelleyin, böylece takım lideri ve üyelerin görevleri görüntüleyebilmesini sağlayın. Bunu yapmak için `get_queryset` metodunu kullanarak, sadece kullanıcının sahip olduğu veya izleyici olarak eklendiği görevleri görüntülemesini sağlayın.
+27. `complete_task` ve `assign_task_to_member` gibi fonksiyonları TaskViewSet içinde ekleyin ve bu fonksiyonları `update` metodunda kullanarak, görevleri tamamlayan ve takım üyelerine görev atayan işlemleri gerçekleştirin.
+28. `order_tasks_by_params` gibi bir fonksiyon oluşturun ve bu fonksiyonu `list` metodunda kullanarak, görevlerin tarih, durum vb. parametrelere göre sıralanmasını sağlayın.
+29. `filter_and_order_tasks` gibi bir fonksiyon oluşturun ve bu fonksiyonu `list` metodunda kullanarak, görevlerin filtrelenmesi ve sıralanması işlemlerini gerçekleştirin.
+30. `calculate_project_duration` fonksiyonunu Team modeline ekleyin.
+31. TaskViewSet içinde `calculate_durations` fonksiyonunu ekleyin ve bu fonksiyonu `list` metodunda kullanarak, görev sürelerini ve takımın proje süresini hesaplayın.
+32. `evaluate_performance` fonksiyonunu Team modeline ekleyin.
+33. TaskViewSet içinde `evaluate_team_performance` fonksiyonunu ekleyin ve bu fonksiyonu `list` metodunda kullanarak, takımın performansını değerlendirin.
+34. TaskViewSet içinde `evaluate_member_performance` fonksiyonunu ekleyin ve bu fonksiyonu `list` metodunda kullanarak, takım üyelerinin performansını değerlendirin.
+35 - 39 maddeleri, daha önce bahsettiğim `list`, `update` ve `destroy` metodlarını güncelleyerek gerçekleştirilebilir. Bu işlemler için önceden oluşturulan fonksiyonları kullanarak, kullanıcının kendi görevleri ve takım görevlerini yönetebilmesini sağlayın.
+40. Testlerinizi gerçekleştirin, gerekli düzeltmeleri yaparak projeyi tam

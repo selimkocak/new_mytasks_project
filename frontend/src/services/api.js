@@ -211,7 +211,7 @@ export const getUserEmail = async () => {
 
 // kullanıcıların üye oldukları takım listesi için fonksiyon frontend\src\services\api.js
 export const getUserTeamMembership = (token) => {
-  return api.get(`/custom_user/filtered_teams/`, {
+  return api.get(`/custom_user/teams/`, {
     headers: {
       'Authorization': `Bearer ${token}`,
     },

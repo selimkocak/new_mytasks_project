@@ -18,7 +18,8 @@ class TaskSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Task
-        fields = ['id', 'user', 'username', 'title', 'description', 'status', 'deadline', 'team_membership', 'created_at', 'updated_at']
+        fields = ['id', 'user', 'username', 'title', 'description', 'status', 'deadline', 'team', 'created_at', 'updated_at']
+
 
 class TeamSerializer(serializers.ModelSerializer):
     team_manager = serializers.SlugRelatedField(slug_field='email', queryset=AppUser.objects.all())

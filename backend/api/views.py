@@ -14,36 +14,49 @@ from rest_framework.decorators import action
 
 class TaskViewSet(viewsets.ModelViewSet):
     serializer_class = TaskSerializer
-    permission_classes = [permissions.IsAuthenticated, IsTaskOwner, IsTeamLeader]
+    permission_classes = [permissions.IsAuthenticated, IsTaskOwner | IsTeamLeader]
+
+    def get_permissions(self):
+        if self.action == "create":
+            self.permission_classes = [permissions.IsAuthenticated]
+        return super().get_permissions()
 
     def get_queryset(self):
         user = self.request.user
         owned_tasks = Task.objects.filter(user=user)
         # Takıma bağlı görevlerin her takım üyesine görünür olması
         team_tasks = Task.objects.filter(team__members=user)
-        return owned_tasks.union(team_tasks)
+        return list(owned_tasks) + list(team_tasks)
 
     def assign_task_to_team_members(self, team_id, task):
         team_members = Membership.objects.filter(team_id=team_id)
         for member in team_members:
-            task.team_membership.add(member)
+            task.team_members.add(member.user)  # 'team_members' kullanıyoruz
+
+
+    def get_or_create_user_team(self, user):
+        user_team = Team.objects.filter(team_name="User Team", members=user).first()
+        if not user_team:
+            user_team = Team.objects.create(team_name="User Team", team_manager=user)
+            user_team.add_member(user)
+        return user_team      
 
     def create(self, request, *args, **kwargs):
         user = request.user
         team_id = request.data.get('team', None)
 
         if not team_id:
-            raise ValidationError("Görevin takımı belirtilmelidir.")
+            team = self.get_or_create_user_team(user)
+        else:
+            team = Team.objects.filter(id=team_id).first()
 
-        team = Team.objects.filter(id=team_id).first()
+            if not team:
+                raise ValidationError("Belirtilen takım bulunamadı.")
 
-        if not team:
-            raise ValidationError("Belirtilen takım bulunamadı.")
+            membership = Membership.objects.filter(user=user, team=team).first()
 
-        membership = Membership.objects.filter(user=user, team=team).first()
-
-        if not membership:
-            raise ValidationError("Kullanıcı, belirtilen takımın üyesi değildir.")
+            if not membership:
+                raise ValidationError("Kullanıcı, belirtilen takımın üyesi değildir.")
         
         # Task'ı kaydedip task nesnesini alalım.
         serializer = self.get_serializer(data=request.data)
@@ -51,28 +64,27 @@ class TaskViewSet(viewsets.ModelViewSet):
         task = serializer.save()
 
         # Takım üyelerine görevi atayalım.
-        self.assign_task_to_team_members(team_id, task)
+        self.assign_task_to_team_members(team.id, task)
 
         headers = self.get_success_headers(serializer.data)
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
-
 
     def perform_update(self, serializer):
         user = self.request.user
         team_id = self.request.data.get('team', None)
 
         if not team_id:
-            raise ValidationError("Görevin takımı belirtilmelidir.")
+            team = self.get_or_create_user_team(user)
+        else:
+            team = Team.objects.filter(id=team_id).first()
 
-        team = Team.objects.filter(id=team_id).first()
+            if not team:
+                raise ValidationError("Belirtilen takım bulunamadı.")
 
-        if not team:
-            raise ValidationError("Belirtilen takım bulunamadı.")
+            membership = Membership.objects.filter(user=user, team=team).first()
 
-        membership = Membership.objects.filter(user=user, team=team).first()
-
-        if not membership:
-            raise ValidationError("Kullanıcı, belirtilen takımın üyesi değildir.")
+            if not membership:
+                raise ValidationError("Kullanıcı, belirtilen takımın üyesi değildir.")
 
         serializer.save()
 
@@ -92,12 +104,11 @@ class TaskViewSet(viewsets.ModelViewSet):
 
         return super().destroy(request, *args, **kwargs)
 
-
     def _is_task_owner(self, user, task):
         return task.user == user
 
     def _is_team_leader(self, user, task):
-        team = task.team_membership.team
+        team = task.team.team
         membership = team.memberships.filter(user=user, role=Role.TEAM_LEADER.value).first()
         return membership is not None
     
@@ -105,7 +116,7 @@ class TaskViewSet(viewsets.ModelViewSet):
         user = self.request.user
         owned_tasks = Task.objects.filter(user=user, team=team_id)
         team_tasks = Task.objects.filter(team__members=user, team=team_id)
-        return owned_tasks.union(team_tasks)
+        return list(owned_tasks) + list(team_tasks)
 
     def list(self, request, *args, **kwargs):
         team_id = request.query_params.get('team', None)
@@ -122,10 +133,6 @@ class TaskViewSet(viewsets.ModelViewSet):
         serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data)
     
-
-
-
-
 class TeamViewSet(viewsets.ModelViewSet):
     queryset = Team.objects.all()
     serializer_class = TeamSerializer
@@ -144,7 +151,7 @@ class TeamViewSet(viewsets.ModelViewSet):
                 existing_membership = Membership.objects.filter(user=team_leader, team=team).first()
                 if not existing_membership:
                     Membership.objects.create(user=team_leader, team=team, role=Role.TEAM_LEADER.value)
-
+                
         # Takım üyelerini takıma ekleyin
         for member_email in request.data.get('team_members', []):
             user = AppUser.objects.filter(email=member_email).first()
@@ -218,13 +225,10 @@ class TeamViewSet(viewsets.ModelViewSet):
         team.remove_member(user)
         return Response(status=status.HTTP_204_NO_CONTENT)
 
-
-
 class MembershipViewSet(viewsets.ModelViewSet):
     queryset = Membership.objects.all()
     serializer_class = MembershipSerializer
     permission_classes = [permissions.IsAuthenticated, IsAdminUser]
-
 
 class UserTeamsAPIView(generics.ListAPIView):
     serializer_class = TeamSerializer
@@ -244,4 +248,3 @@ class UserTeamsAPIView(generics.ListAPIView):
             return member_teams
         else:
             return teams
-

@@ -1,4 +1,4 @@
-#backend\api\models.py kodlarım
+# backend\api\models.py kodlarım
 from django.db import models
 from custom_user.models import AppUser, Role
 
@@ -51,7 +51,8 @@ class Task(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     viewers = models.ManyToManyField(AppUser, related_name='viewed_tasks')  # Yeni eklenen viewers alanı
-
+    team_members = models.ManyToManyField(AppUser, related_name="assigned_tasks")
+    
     def __str__(self):
         return self.title
 
