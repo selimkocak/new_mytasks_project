@@ -1,13 +1,13 @@
 //frontend\src\components\Tasks\List\TaskList.js kodlarım
 import React, { useState, useEffect } from 'react';
-import { fetchTasks } from '../../../services/api';
+import { fetchTasks, fetchUserTeams } from '../../../services/api';
 import {
   TaskListContainer,
   TaskColumn,
 } from '../../Views/Tasks/TaskListStyle';
 import TaskStatus from '../Status/TaskStatus';
 
-function TaskList({ tasks, onAction, filterValue, onFilterChange }) {
+function TaskList({ tasks, onAction, filterValue }) {
   const [localTasks, setTasks] = useState([]);
 
   const filterByDate = (task) => {
@@ -47,17 +47,25 @@ function TaskList({ tasks, onAction, filterValue, onFilterChange }) {
   );
 
   useEffect(() => {
-    const getTasks = async () => {
+    const fetchData = async () => {
       try {
-        const data = await fetchTasks();
-        setTasks(data);
+        const userTeams = await fetchUserTeams();
+        const allTasks = [];
+  
+        for (const team of userTeams) {
+          const teamTasks = await fetchTasks(team.id);
+          allTasks.push(...teamTasks);
+        }
+  
+        setTasks(allTasks);
       } catch (error) {
         console.error('Error fetching tasks:', error);
       }
     };
-    getTasks();
+  
+    fetchData();
   }, []);
-
+  
   useEffect(() => {
     setTasks(tasks);
   }, [tasks]);

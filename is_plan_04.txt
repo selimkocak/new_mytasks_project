@@ -23,15 +23,15 @@ Aşağıdaki iş planı, istediğiniz özellikleri eklemek ve proje üzerinde ç
 +21. TaskViewSet içerisinde, görevlerin filtrelenmesi için yeni bir fonksiyon (ör. `filter_tasks_by_team`) ekleyin ve bu fonksiyonu `list` metodunda kullanın.
 +22. TaskViewSet içerisinde, görevlerin takım üyelerine atanmasını sağlayacak bir fonksiyon (ör. `assign_task_to_team_members`) ekleyin ve bu fonksiyonu `create` metodunda kullanın.
 +23. TaskViewSet içerisinde, görevlerin takım üyelerinden kaldırılmasını sağlayacak bir fonksiyon (ör. `remove_task_from_team_members`) ekleyin ve bu fonksiyonu `destroy` metodunda kullanın.
-24. `Task` modelinde, görevin durumunu güncelleyen bir fonksiyon (ör. `update_status`) ekleyin ve bu fonksiyonu TaskViewSet içerisinde kullanın.
-25. TaskViewSet içerisinde, görevlerin takım lideri tarafından yönetilmesini sağlayacak `retrieve`, `update` ve `destroy` metodlarını düzenleyin.
-26. TaskViewSet içerisinde, takım lideri ve üyelerin görevleri görüntülemesini sağlayacak şekilde `retrieve` metodunu güncelleyin.
-27. TaskViewSet içerisinde, görevleri tamamlayan ve takım üyelerine görev atayan fonksiyonlar (ör. `complete_task`, `assign_task_to_member`) ekleyin.
-28. TaskViewSet içerisinde, görevlerin sıralanması için gerekli parametreleri (ör. tarih, durum) alan ve kullanıcıya göre filtreleyen bir fonksiyon (ör. `order_tasks_by_params`) ekleyin.
-29. TaskViewSet içerisinde, görevlerin sıralanması ve filtrelenmesi için yeni bir fonksiyon (ör. `filter_and_order_tasks`) ekleyin ve bu fonksiyonu `list` metodunda kullanın.
-30. `Team` modelinde, takımın proje süresini ve görevlerin sürelerini hesaplayan bir fonksiyon (ör. `calculate_project_duration`) ekleyin.
-31. TaskViewSet içerisinde, görevlerin sürelerini ve takımın proje süresini hesaplayan bir fonksiyon (ör. `calculate_durations`) ekleyin ve bu fonksiyonu `list` metodunda kullanın.
-32. `Team` modelinde, takımın performansını değerlendiren bir fonksiyon (ör. `evaluate_performance`) ekleyin.
++24. `Task` modelinde, görevin durumunu güncelleyen bir fonksiyon (ör. `update_status`) ekleyin ve bu fonksiyonu TaskViewSet içerisinde kullanın.
++25. TaskViewSet içerisinde, görevlerin takım lideri tarafından yönetilmesini sağlayacak `retrieve`, `update` ve `destroy` metodlarını düzenleyin.
++26. TaskViewSet içerisinde, takım lideri ve üyelerin görevleri görüntülemesini sağlayacak şekilde `retrieve` metodunu güncelleyin.
++27. TaskViewSet içerisinde, görevleri tamamlayan ve takım üyelerine görev atayan fonksiyonlar (ör. `complete_task`, `assign_task_to_member`) ekleyin.
++28. TaskViewSet içerisinde, görevlerin sıralanması için gerekli parametreleri (ör. tarih, durum) alan ve kullanıcıya göre filtreleyen bir fonksiyon (ör. `order_tasks_by_params`) ekleyin.
++29. TaskViewSet içerisinde, görevlerin sıralanması ve filtrelenmesi için yeni bir fonksiyon (ör. `filter_and_order_tasks`) ekleyin ve bu fonksiyonu `list` metodunda kullanın.
++30. `Team` modelinde, takımın proje süresini ve görevlerin sürelerini hesaplayan bir fonksiyon (ör. `calculate_project_duration`) ekleyin.
++31. TaskViewSet içerisinde, görevlerin sürelerini ve takımın proje süresini hesaplayan bir fonksiyon (ör. `calculate_durations`) ekleyin ve bu fonksiyonu `list` metodunda kullanın.
++32. `Team` modelinde, takımın performansını değerlendiren bir fonksiyon (ör. `evaluate_performance`) ekleyin.
 33. TaskViewSet içerisinde, takımın performansını değerlendiren bir fonksiyon (ör. `evaluate_team_performance`) ekleyin ve bu fonksiyonu `list` metodunda kullanın.
 34. TaskViewSet içerisinde, takım üyelerinin performansını değerlendiren bir fonksiyon (ör. `evaluate_member_performance`) ekleyin ve bu fonksiyonu `list` metodunda kullanın.
 35. TaskViewSet içerisinde, kullanıcıların kendi görevlerini ve takım görevlerini görüntüleyebilmesi için `list` metodunu güncelleyin.

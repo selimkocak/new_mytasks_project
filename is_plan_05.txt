@@ -1,0 +1,33 @@
+Öncelikle, büyük dosyaların okunmasını ve yönetilmesini kolaylaştırmak için kodları mantıksal 
+bileşenlere bölmek iyi bir fikirdir. İşte büyük projelerde kullanabileceğiniz 
+ve mevcut kodlarınızı parçalara bölmeye yardımcı olabilecek bir strateji:
+
+1. `views.py` dosyanızı `views` adında bir klasöre dönüştürün.
+2. Bu klasörde aşağıdaki dosyaları oluşturun:
+   - `__init__.py`: Bu dosya, klasörü Python paketi olarak işaretler.
+   - `base.py`: Temel sınıf ve yardımcı fonksiyonları içerecek.
+   - `task_views.py`: `TaskViewSet` sınıfını ve onunla ilgili fonksiyonları içerecek.
+   - `team_views.py`: `TeamViewSet` sınıfını ve onunla ilgili fonksiyonları içerecek.
+   - `membership_views.py`: `MembershipViewSet` sınıfını ve onunla ilgili fonksiyonları içerecek.
+   - `user_teams_views.py`: `UserTeamsAPIView` sınıfını ve onunla ilgili fonksiyonları içerecek.
+3. `__init__.py` dosyasında, diğer modüllerdeki sınıfları ve fonksiyonları içe aktarın, böylece 
+dışarıdan `views` paketini kullanırken tüm bileşenlere erişebilirsiniz.
+
+`backend/api/views/__init__.py` dosyanız şu şekilde görünmelidir:
+
+```python
+from .base import *
+from .task_views import TaskViewSet
+from .team_views import TeamViewSet
+from .membership_views import MembershipViewSet
+from .user_teams_views import UserTeamsAPIView
+```
+
+Bu yapılandırma, projenizin düzenli ve anlaşılır olmasına yardımcı olacaktır. 
+Ayrıca ileride yeni özellikler eklerken veya mevcut özelliklerde değişiklik yaparken kolayca genişletebilirsiniz.
+
+Son olarak, büyük projelerde standart yapı ve isimlendirmeleri takip etmek önemlidir. 
+Django'nun [resmi belgelerindeki](https://docs.djangoproject.com/en/4.1/intro/tutorial01/) 
+projeler ve uygulamalar için önerilen yapıyı kullanarak başlayabilirsiniz. Genellikle, projeler 
+ve uygulamalar arasındaki işlevsellik ayrımını korumak ve kodunuzu düzenli ve anlaşılır tutmak 
+için Django'nun önerdiği klasör ve dosya isimlerine bağlı kalmak iyi bir uygulamadır.

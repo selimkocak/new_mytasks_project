@@ -36,6 +36,17 @@ export const updateTask = (id, title, description, status, team_membership, dead
   });
 };
 
+// Görev durumunu güncellemek için fonksiyon
+export const updateTaskStatus = (id, newStatus, token) => {
+  return api.patch(`/tasks/${id}/update_status/`, {
+    status: newStatus
+  }, {
+    headers: {
+      'Authorization': `Bearer ${token}`,
+    },
+  });
+};
+
 export const deleteTask = async (id, token) => {
   try {
     const response = await api.delete(`/tasks/${id}/`, {
@@ -108,6 +119,21 @@ export const fetchTasks = async () => {
   }
 };
 
+// frontend\src\services\api.js
+export const fetchUserTeams = async () => {
+  try {
+    const token = localStorage.getItem('access_token');
+    const response = await api.get('/custom_user/teams/', {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching user teams:', error);
+    throw error;
+  }
+};
 
 // Takım oluşturma frontend\src\services\api.js kodlarım
 export const createTeam = (team_name, team_manager, team_members, team_color, team_symbol, memberships, token) => {
@@ -124,7 +150,6 @@ export const createTeam = (team_name, team_manager, team_members, team_color, te
     }
   });
 };
-
 
 // Takım güncelleme
 export const updateTeam = (id, team_name, team_manager, team_members, team_color, team_symbol, token) => {
@@ -217,4 +242,3 @@ export const getUserTeamMembership = (token) => {
     },
   });
 };
-
