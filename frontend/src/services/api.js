@@ -8,6 +8,17 @@ const api = axios.create({
   },
 });
 
+api.interceptors.request.use((config) => {
+  const token = localStorage.getItem('access_token');
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+}, (error) => {
+  return Promise.reject(error);
+});
+
+
 export const createTask = (title, description, status, team_membership, deadline, token) => {
   return api.post("/tasks/", {
     title,
@@ -104,10 +115,9 @@ export const loginUser = async (email, password) => {
 };
 
 //frontend\src\services\api.js görevleri listelem kodlarım
-export const fetchTasks = async () => {
+export const fetchTasks = async (teamId, token) => {
   try {
-    const token = localStorage.getItem('access_token');
-    const response = await api.get('/custom_user/tasks/', {
+    const response = await api.get(`/teams/${teamId}/tasks/`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -119,10 +129,9 @@ export const fetchTasks = async () => {
   }
 };
 
-// frontend\src\services\api.js
-export const fetchUserTeams = async () => {
+
+export const fetchUserTeams = async (token) => {
   try {
-    const token = localStorage.getItem('access_token');
     const response = await api.get('/custom_user/teams/', {
       headers: {
         Authorization: `Bearer ${token}`,

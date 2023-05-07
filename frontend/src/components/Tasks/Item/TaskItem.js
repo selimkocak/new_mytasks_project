@@ -51,7 +51,6 @@ function TaskItem({ task }) {
     <TaskItemContainer completed={task.status === 'Tamamlanan'} style={{ backgroundColor }}>
       <div>
         <TaskTitle>{title}</TaskTitle>
-           
         <TaskDescription completed={completed}>
           {isTruncated ? truncatedDescription + '...' : description}
         </TaskDescription>

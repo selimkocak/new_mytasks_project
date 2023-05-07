@@ -1,0 +1,65 @@
+mytasks projesinde uygulamanın iş tanım süreçleri şöyle
+
+1. Kullanıcı kimlik doğrulumasını email adresi ve şifre girişi ile yapar
+2. Kullanıcı yeni görev kartı aşağıda ki alanları doldurarak oluşturur
+title, description, status, deadline, team
+formda otomatik olarak dolan alanlar; viewers (login olan kullanıcıyı seçilir),
+team members (eğer takım alanı seçili değilse sadece kullanıcı seçilir, eğer takım
+alanı seçili ise o takıma üye kullanıcılar seçilir), team (bu alan kullanıcı bir takıma üye ve
+veya yönetici ise listeleniri ve seçim için zorunlu alan değildir)
+3. kullanıcılar kendi görev kartlarını ve üyesi ve/veya yöneticisi oldukları takım veya takımların
+görevlerini görebilirler ancak sadece kendi oluşturdukları görevleri düzenleyebilirler veya silebilirler
+
+MyTasks projesi için 25 maddelik iş planı:
+
+1. Proje yapısını ve dosya yolu hiyerarşisini inceleyin.
+2. Kullanıcı kimlik doğrulaması için gerekli React bileşenlerini oluşturun.
+3. Kimlik doğrulama bileşenleri için stil dosyaları oluşturun.
+4. Email ve şifre girişi için API çağrılarını gerçekleştirecek servisleri oluşturun.
+5. Kullanıcıların görevlerini oluşturabilecekleri bir görev oluşturma formu oluşturun.
+6. Görev formu için stil dosyaları oluşturun.
+7. Görev oluşturma formundaki alanların otomatik doldurulması için kod yazın.
+8. Görevlerin listelendiği bir görev listesi bileşeni oluşturun.
+9. Görev listesi bileşeni için stil dosyaları oluşturun.
+10. Görev listesini görüntülemek için API çağrılarını gerçekleştirecek servisleri oluşturun.
+11. Görevleri düzenlemek için bir görev düzenleme formu oluşturun.
+12. Görev düzenleme formu için stil dosyaları oluşturun.
+13. Görevleri düzenlemek için API çağrılarını gerçekleştirecek servisleri oluşturun.
+14. Görevleri silmek için bir görev silme bileşeni oluşturun.
+15. Görev silme bileşeni için stil dosyaları oluşturun.
+16. Görevleri silmek için API çağrılarını gerçekleştirecek servisleri oluşturun.
+17. Takımların listelendiği bir takım listesi bileşeni oluşturun.
+18. Takım listesi bileşeni için stil dosyaları oluşturun.
+19. Takım listesini görüntülemek için API çağrılarını gerçekleştirecek servisleri oluşturun.
+20. Takımların üyelerini ve görevlerini görüntüleyecek bir takım görüntüleme bileşeni oluşturun.
+21. Takım görüntüleme bileşeni için stil dosyaları oluşturun.
+22. Takım üyelerini ve görevlerini görüntülemek için API çağrılarını gerçekleştirecek servisleri oluşturun.
+23. Uygulamada kullanılacak yardımcı fonksiyonları içeren utils.js dosyasını oluşturun.
+24. Uygulamanın yönlendirmelerini (routing) ve sayfa düzenini (layout) ayarlayın.
+25. Tüm bileşenlerin ve servislerin düzgün çalıştığını test edin ve hataları düzeltin.
+
+
+180 maddelik bir iş planı oluşturmak için öncelikle projenizin temel özelliklerini ve bileşenlerini belirlemeliyiz. İş planınızın ana başlıklarını listeleyerek başlayalım:
+
+1. Kullanıcı kimlik doğrulama sistemi
+2. Görev kartı oluşturma özelliği
+3. Görevlerin görüntülenmesi, düzenlenmesi ve silinmesi. Aynı projede görevli ekip üyelerinin o projeye ait görevleri listeleyebilir olması
+4. Kanban tahtası görünümü
+5. Kullanıcı bildirimleri
+6. Ortak görevler ve atamalar
+7. Görevlere yıldız puan verme
+8. Görevlere yorum yapma özelliği
+9. Proje oluşturma. Proje lideri ve ekip üyeleri. Proje başlama ve bitişi süreleri
+
+Bu ana başlıklar altında, her bir özelliği daha ayrıntılı olarak ele alarak iş planınızı genişletebilirsiniz. Aşağıda örnek olarak "Kullanıcı kimlik doğrulama sistemi" başlığının altında olabilecek maddeleri listeledim:
+
+1.1. Kullanıcıların kayıt olması
+1.2. Kullanıcıların giriş yapması
+1.3. Şifre sıfırlama işlemleri
+1.4. Email doğrulama sistemi
+1.5. Kullanıcı profili ve ayarları
+1.6. Oturum süreleri ve oturum yenileme
+
+Her ana başlık için benzer şekilde detaylı maddeler ekleyerek, 180 maddelik bir iş planı oluşturabilirsiniz. Bu sayede projenizin her aşamasını daha iyi planlayabilir ve organize edebilirsiniz.
+Ayrıca, projenizin frontend ve backend tarafındaki teknolojileri ve kullanacağınız kütüphaneleri belirlemeniz de önemlidir. Bu bağlamda, iş planınıza projenizin teknolojik bileşenlerini ve uyumlu kütüphaneleri de dahil edebilirsiniz.
+Son olarak, iş planınızı takım üyelerinizle paylaşarak herkesin projenin aşamaları ve hedefleri hakkında bilgi sahibi olmasını sağlayabilirsiniz. Bu sayede daha etkili bir işbirliği ve projenin başarılı bir şekilde tamamlanması mümkün olacaktır.

@@ -11,5 +11,4 @@ const TaskView = ({ task, onClose }) => {
     </TaskViewContainer>
   );
 };
-
 export default TaskView;

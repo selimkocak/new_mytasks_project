@@ -10,6 +10,35 @@ import TaskStatus from '../Status/TaskStatus';
 function TaskList({ tasks, onAction, filterValue }) {
   const [localTasks, setTasks] = useState([]);
 
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const token = localStorage.getItem('access_token');
+        const userTeamsResponse = await fetchUserTeams(token);
+        const userTeams = userTeamsResponse.data;
+        const allTasks = [];
+
+        for (const team of userTeams) {
+          const teamTasksResponse = await fetchTasks(team.id, token);
+          const teamTasks = teamTasksResponse.data;
+          allTasks.push(...teamTasks);
+        }
+
+        setTasks(allTasks);
+      } catch (error) {
+        console.error('Error fetching tasks:', error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    if (Array.isArray(tasks)) {
+      setTasks(tasks);
+    }
+  }, [tasks]);
+
   const filterByDate = (task) => {
     const now = new Date();
     const taskDeadline = new Date(task.deadline);
@@ -31,10 +60,11 @@ function TaskList({ tasks, onAction, filterValue }) {
     }
   };
 
-  const filteredTasks = localTasks.filter((task) => {
+  const filteredTasks = Array.isArray(localTasks) ? localTasks.filter((task) => {
     if (!filterValue) return true;
     return filterByDate(task);
-  });;
+  }) : [];
+
   
   const filteredPlannedTasks = filteredTasks.filter(
     (task) => !task.completed && task.status === 'Planlanan'
@@ -63,12 +93,15 @@ function TaskList({ tasks, onAction, filterValue }) {
       }
     };
   
-    fetchData();
+    fetchData(setTasks);
   }, []);
   
   useEffect(() => {
-    setTasks(tasks);
-  }, [tasks]);
+    console.log("localTasks:", localTasks);
+    if (Array.isArray(tasks)) {
+      setTasks(tasks);
+    }
+  }, [tasks, localTasks]);
 
 return (
     <TaskListContainer>

@@ -1,4 +1,4 @@
-//frontend\src\components\Tasks\Create\TaskCreate.js kodlarım
+// frontend\src\components\Tasks\Create\TaskCreate.js
 import React, { useState, useEffect } from 'react';
 import useForm from '../../../hooks/useForm';
 import { FormGroup, FormLabel, FormControl, TextArea, SubmitButton, Form } from '../../Views/Tasks/TaskCreateStyle';
@@ -15,15 +15,14 @@ function TaskCreate({ onTaskCreated, userId }) {
     title: '',
     description: '',
     status: 'Planlanan',
-    team_membership:'',
+    team_membership: '',
     deadline: '',
   };
 
   const [values, handleChange, resetForm] = useForm(initialValues);
-  const { title, description, status, team_membership, deadline } = values; // Add team_membership
+  const { title, description, status, team_membership, deadline } = values;
   const [open, setOpen] = useState(false);
   const [userTeams, setUserTeams] = useState([]);
-
 
   const handleOpen = () => {
     setOpen(true);
@@ -42,23 +41,21 @@ function TaskCreate({ onTaskCreated, userId }) {
       onTaskCreated(newTask);
     }
   };
-  
+
   useEffect(() => {
     const fetchUserTeams = async () => {
       try {
         const token = localStorage.getItem('access_token');
         const userTeamMemberships = await getUserTeamMembership(token);
         setUserTeams(userTeamMemberships.data);
-        console.log('User Teams:', userTeamMemberships.data); // Bu satırı ekleyin
       } catch (error) {
         console.error('Error fetching user teams:', error);
       }
     };
     fetchUserTeams();
   }, []);
-    
-   
-return (
+
+  return (
     <>
       <button onClick={handleOpen}>Create Task</button>
       <Dialog open={open} onClose={handleClose}>
@@ -105,7 +102,7 @@ return (
                   <option value="">Select a Team</option>
                   {userTeams.map((team) => (
                     <option key={team.id} value={team.id}>
-                      {team.team_name} 
+                      {team.team_name}
                     </option>
                   ))}
                 </FormControl>

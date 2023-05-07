@@ -1,0 +1,80 @@
+İş planını aşağıdaki gibi oluşturdum ve süreçlere göre sıraladım. Bu iş planı 
+72 maddeyi kapsamaktadır:
+
+Frontend tarafında yapılması gerekenler:
++1. src\components\Tasks\TaskView.js dosyasını güncelle
++2. src\components\Tasks\Create\actions.js dosyasını güncelle
++3. src\components\Tasks\Create\TaskCreate.js dosyasını güncelle
++4. src\components\Tasks\Date\TaskDate.js dosyasını güncelle
++5. src\components\Tasks\Delete\TaskDelete.js dosyasını güncelle
++6. src\components\Tasks\Edit\TaskEdit.js dosyasını güncelle
++7. src\components\Tasks\Filter\TaskFilter.js dosyasını güncelle
++8. src\components\Tasks\Header\TaskHeader.js dosyasını güncelle
++9. src\components\Tasks\Item\TaskItem.js dosyasını güncelle
++10. src\components\Tasks\List\TaskList.js dosyasını güncelle
+11. src\components\Tasks\Manager\actions.js dosyasını güncelle
+12. src\components\Tasks\Manager\TaskManager.js dosyasını güncelle
+13. src\components\Tasks\Status\TaskStatus.js dosyasını güncelle
+14. src\components\Teams\Create\actions.js dosyasını güncelle
+15. src\components\Teams\Create\TeamCreate.js dosyasını güncelle
+16. src\components\Teams\Delete\TeamDelete.js dosyasını güncelle
+17. src\components\Teams\Edit\TeamEdit.js dosyasını güncelle
+18. src\components\Teams\List\TeamList.js dosyasını güncelle
+19. src\components\Views\Auth\LoginForm.js dosyasını güncelle
+20. src\components\Views\Auth\Logout.js dosyasını güncelle
+21. src\components\Views\Auth\RegisterForm.js dosyasını güncelle
+22. src\components\Views\Tasks\LoginFormStyle.js dosyasını güncelle
+23. src\components\Views\Tasks\NavbarElements.js dosyasını güncelle
+24. src\components\Views\Tasks\RegisterFormStyle.js dosyasını güncelle
+25. src\components\Views\Tasks\TaskCreateStyle.js dosyasını güncelle
+26. src\components\Views\Tasks\TaskDeleteSytle.js dosyasını güncelle
+27. src\components\Views\Tasks\TaskEditSytle.js dosyasını güncelle
+28. src\components\Views\Tasks\TaskHeaderStyle.js dosyasını güncelle
+29. src\components\Views\Tasks\TaskItemStyle.js dosyasını güncelle
+30. src\components\Views\Tasks\TaskListStyle.js dosyasını güncelle
+31. src\components\Views\Tasks\TaskManagerStyle.js dosyasını güncelle
+32. src\components\Views\Tasks\TasksModalStyle.js dosyasını güncelle
+33. src\components\Views\Tasks\TaskStatusStyle.js dosyasını güncelle
+34. src\components\Views\Tasks\TaskViewStyle.js dosyasını güncelle
+35. src\components\Views\Teams\TeamCreateStyle.js dosyasını güncelle
+36. src\components\Teams\TeamDeleteStyle.js dosyasını güncelle
+37. src\components\Views\Teams\TeamEditStyle.js dosyasını güncelle
+38. src\components\Views\Teams\TeamListStyle.js dosyasını güncelle
+39. src\hooks\useForm.js dosyasını güncelle
+40. src\services\api.js dosyasını güncelle
+41. src\services\utils.js dosyasını güncelle
+42. src\utils\auth.js dosyasını güncelle
+43. src\utils\validation.js dosyasını güncelle
+44. src\App.css dosyasını güncelle
+45. src\App.js dosyasını güncelle
+46. src\App.test.js dosyasını güncelle
+47. src\AuthContext.js dosyasını güncelle
+48. src\index.css dosyasını güncelle
+49. src\index.js dosyasını güncelle
+50. src\logo.svg dosyasını güncelle
+51. src\reportWebVitals.js dosyasını güncelle
+52. src\setupTests.js dosyasını güncelle
+53. frontend\public klasöründeki statik dosyaları güncelle
+54. frontend\package.json dosyasını güncelle
+55. frontend\README.md dosyasını güncelle
+56. Gerekli npm paketlerini güncelle
+57. Kodları test et
+58. Hataları düzelt
+59. Testleri tekrar çalıştır
+60. Performans optimizasyonları yap
+61. Tarayıcı uyumluluklarını kontrol et
+62. Mobil uyumlulukları kontrol et
+63. Kullanılabilirlik ve erişilebilirlik kontrolleri yap
+64. Uygulamayı lokal olarak çalıştır
+65. Uygulamayı canlı ortama yükle
+66. Canlı ortamda testler yap
+67. Canlı ortamda hataları düzelt
+68. Canlı ortamda performans optimizasyonları yap
+69. Canlı ortamda tarayıcı uyumluluklarını kontrol et
+70. Canlı ortamda mobil uyumlulukları kontrol et
+71. Canlı ortamda kullanılabilirlik ve erişilebilirlik kontrolleri yap
+72. Son kontrolleri yap ve projeyi tamamla
+
+Bu 72 maddelik iş planı, frontend tarafındaki kodları güncellemek ve uygulamanın işlevselliğini
+sağlamak için gereken adımları kapsamaktadır. Bu iş planını takip ederek, frontend tarafında
+istediğiniz güncellemeleri başarıyla gerçekleştirebilirsiniz.

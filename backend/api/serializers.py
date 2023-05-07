@@ -20,7 +20,6 @@ class TaskSerializer(serializers.ModelSerializer):
         model = Task
         fields = ['id', 'user', 'username', 'title', 'description', 'status', 'deadline', 'team', 'created_at', 'updated_at']
 
-
 class TeamSerializer(serializers.ModelSerializer):
     team_manager = serializers.SlugRelatedField(slug_field='email', queryset=AppUser.objects.all())
     team_leader = serializers.SlugRelatedField(slug_field='email', read_only=True)

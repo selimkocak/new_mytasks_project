@@ -1,3 +1,4 @@
+# backend\api\views\user_teams_views.py kodlarım
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
 from api.models import AppUser, Membership, Team

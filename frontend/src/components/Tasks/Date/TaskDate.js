@@ -30,5 +30,4 @@ const TaskDate = ({ handleDateChange, initialDate }) => {
     />
   );
 };
-
 export default TaskDate;

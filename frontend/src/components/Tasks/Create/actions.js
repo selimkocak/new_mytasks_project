@@ -10,5 +10,8 @@ export const createNewTask = async (title, description, status, team_membership,
     return newTask;
   } catch (error) {
     console.error('Error creating task:', error);
+    // Hata durumunda döndürülecek değeri belirlemek için burayı güncelleyin, örneğin null döndürebilirsiniz:
+    return null;
   }
 };
+

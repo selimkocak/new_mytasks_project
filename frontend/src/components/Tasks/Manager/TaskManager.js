@@ -36,12 +36,14 @@ function TaskManager() {
 
   const handleTaskCreated = async (newTask) => {
     try {
-      const data = await fetchTasks();
+      const token = localStorage.getItem('access_token');
+      const data = await fetchTasks(token);
       setTasks(data);
     } catch (error) {
       console.error('Error fetching tasks:', error);
     }
   };
+  
 
   // handleNewTeamClick fonksiyonunu tanımlayın
   const handleNewTeamClick = () => {

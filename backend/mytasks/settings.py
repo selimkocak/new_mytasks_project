@@ -61,7 +61,8 @@ CORS_ALLOW_HEADERS = list(default_headers) + [
     'access-control-allow-headers',
     'access-control-allow-methods',
     'access-control-allow-origin',
-]  # Bu satırları ekleyin
+    'Authorization',  # Bu satırları ekleyin
+] 
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
